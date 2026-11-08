@@ -1,0 +1,1269 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Mesas de Examen ISP 66</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700&family=Source+Sans+3:ital,wght@0,400;0,500;0,600;0,700;1,400&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: formulario de secretaría en una columna; el panel administrativo usa el mismo lenguaje en ancho completo.
+   Paleta: azul, rojo, blanco y negro. El color de cada año: 1º azul, 2º rojo, 3º negro, 4º gris. */
+:root{
+  --bg:#F3F5FA; --surface:#FFFFFF; --ink:#0A0E1A; --muted:#4F586B; --line:#D4D9E4; --tint:#EBF0FB;
+  --accent:#1A47C9; --accent-ink:#FFFFFF; --red:#D01F30; --tiza:#D01F30; --tiza-bg:#EBF0FB;
+  --ok:#1A47C9; --ok-bg:#E0E9FD; --warn:#0A0E1A; --warn-bg:#E9ECF2; --bad:#C4161F; --bad-bg:#FCE4E6; --info-bg:#E0E9FD; --info:#1A47C9;
+  --y-azul:#1A47C9; --y-rojo:#D01F30; --y-verde:#0A0E1A; --y-violeta:#7A8296; --y-naranja:#1A47C9; --y-celeste:#D01F30; --y-lila:#0A0E1A;
+  --f-display:'Bricolage Grotesque','Source Sans 3',system-ui,sans-serif;
+  --f-body:'Source Sans 3',system-ui,-apple-system,'Segoe UI',sans-serif;
+  --f-mono:'IBM Plex Mono',ui-monospace,Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#05070D; --surface:#0E1320; --ink:#F4F6FB; --muted:#A5AEC2; --line:#273049; --tint:#131B2F;
+  --accent:#6F92FF; --accent-ink:#05070D; --red:#FF5C69; --tiza:#FF5C69; --tiza-bg:#131B2F;
+  --ok:#8FAAFF; --ok-bg:#16244A; --warn:#F4F6FB; --warn-bg:#1B2233; --bad:#FF7A84; --bad-bg:#3A1519; --info-bg:#16244A; --info:#8FAAFF;
+  --y-azul:#6F92FF; --y-rojo:#FF5C69; --y-verde:#F4F6FB; --y-violeta:#8E97AD; --y-naranja:#6F92FF; --y-celeste:#FF5C69; --y-lila:#F4F6FB; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#05070D; --surface:#0E1320; --ink:#F4F6FB; --muted:#A5AEC2; --line:#273049; --tint:#131B2F;
+  --accent:#6F92FF; --accent-ink:#05070D; --red:#FF5C69; --tiza:#FF5C69; --tiza-bg:#131B2F;
+  --ok:#8FAAFF; --ok-bg:#16244A; --warn:#F4F6FB; --warn-bg:#1B2233; --bad:#FF7A84; --bad-bg:#3A1519; --info-bg:#16244A; --info:#8FAAFF;
+  --y-azul:#6F92FF; --y-rojo:#FF5C69; --y-verde:#F4F6FB; --y-violeta:#8E97AD; --y-naranja:#6F92FF; --y-celeste:#FF5C69; --y-lila:#F4F6FB; color-scheme:dark}
+
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:16px;line-height:1.45;padding-block:20px 56px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.wrap{max-width:900px;margin:0 auto;display:flex;flex-direction:column;gap:22px}
+.wrap.wide{max-width:1280px}
+h1,h2,h3{font-family:var(--f-display);margin:0;text-wrap:balance;letter-spacing:-.01em}
+h2{font-size:1.3rem;line-height:1.2}
+h3{font-size:1.02rem}
+p{margin:0}
+button,input,select,textarea{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--accent);outline-offset:2px;border-radius:4px}
+.mono{font-family:var(--f-mono);font-variant-numeric:tabular-nums}
+.muted{color:var(--muted)}
+.small{font-size:.875rem}
+
+/* Cabecera */
+.mast{display:flex;align-items:center;gap:18px;flex-wrap:wrap;padding-bottom:18px;border-bottom:3px solid var(--ink);box-shadow:0 3px 0 var(--red)}
+.sello{border:2px solid var(--ink);padding:6px 10px 5px;line-height:1.05;font-size:.7rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;display:flex;flex-direction:column;gap:2px;min-width:0}
+.sello b{font-family:var(--f-display);font-size:1.35rem;letter-spacing:0}
+.mast-t{min-width:0}
+.kicker{font-size:.78rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--red)}
+h1{font-size:clamp(1.7rem,5vw,2.4rem);line-height:1.05}
+.sub{color:var(--muted)}
+
+.tabs{display:flex;gap:6px;border-bottom:1px solid var(--line)}
+.tab{background:none;border:0;border-bottom:3px solid transparent;padding:10px 14px;font-weight:600;color:var(--muted);cursor:pointer;margin-bottom:-1px}
+.tab[aria-selected="true"]{color:var(--ink);border-bottom-color:var(--accent)}
+
+/* Plazos */
+.plazos{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:0;border:1px solid var(--line);background:var(--surface)}
+.plazo{padding:12px 14px;display:flex;flex-direction:column;gap:2px;min-width:0}
+.plazo+.plazo{border-left:1px solid var(--line)}
+.plazo .k{font-size:.72rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.plazo .v{font-weight:600}
+@media (max-width:640px){.plazo+.plazo{border-left:0;border-top:1px solid var(--line)}}
+
+/* Avisos */
+.callout{padding:12px 14px;border-left:4px solid var(--info);background:var(--info-bg);border-radius:2px}
+.callout.warn{border-color:var(--warn);background:var(--warn-bg)}
+.callout.bad{border-color:var(--bad);background:var(--bad-bg)}
+.callout.ok{border-color:var(--ok);background:var(--ok-bg)}
+.callout strong{display:block}
+
+.sec{display:flex;flex-direction:column;gap:12px}
+.sec>header{display:flex;align-items:baseline;justify-content:space-between;gap:12px;flex-wrap:wrap}
+
+/* Botones */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:42px;padding:8px 16px;border:1.5px solid var(--accent);background:var(--accent);color:var(--accent-ink);font-weight:600;border-radius:4px;cursor:pointer}
+.btn:hover{filter:brightness(1.08)}
+.btn[disabled]{opacity:.45;cursor:not-allowed;filter:none}
+.btn.sec{background:transparent;color:var(--accent)}
+.btn.danger{background:transparent;border-color:var(--bad);color:var(--bad)}
+.btn.danger.confirm{background:var(--bad);color:#fff}
+.btn.sm{min-height:34px;padding:4px 10px;font-size:.9rem}
+.btn.lg{min-height:48px;padding:10px 22px;font-size:1.05rem}
+
+/* Formularios */
+.card{background:var(--surface);border:1px solid var(--line);padding:16px;display:flex;flex-direction:column;gap:14px}
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px 16px}
+.field{display:flex;flex-direction:column;gap:4px;min-width:0}
+.field label,.lbl{font-size:.82rem;font-weight:600;letter-spacing:.02em}
+.field .hint{font-size:.8rem;color:var(--muted)}
+input[type=text],input[type=email],input[type=tel],input[type=number],input[type=search],input[type=datetime-local],select,textarea{width:100%;min-height:42px;padding:8px 10px;border:1.5px solid var(--line);background:var(--bg);border-radius:4px}
+textarea{min-height:70px;resize:vertical}
+input:focus,select:focus,textarea:focus{border-color:var(--accent)}
+.err{color:var(--bad);font-size:.85rem;min-height:1em}
+.field.invalid input,.field.invalid select{border-color:var(--bad)}
+
+/* Lista de mesas */
+.anio{display:flex;flex-direction:column;border:1px solid var(--line);background:var(--surface)}
+.anio>h3{display:flex;align-items:center;gap:10px;padding:10px 14px;background:var(--tint);border-bottom:1px solid var(--line)}
+.dot{width:12px;height:12px;border-radius:50%;background:var(--muted);flex:none}
+.mesa{padding:12px 14px;border-bottom:1px solid var(--line);display:flex;flex-direction:column;gap:10px}
+.mesa:last-child{border-bottom:0}
+.mesa-top{display:flex;gap:12px;align-items:flex-start;justify-content:space-between;flex-wrap:wrap}
+.mesa-top label{display:flex;gap:10px;align-items:flex-start;cursor:pointer;min-width:0;flex:1 1 260px}
+.mesa-top input[type=checkbox]{width:22px;height:22px;margin-top:2px;flex:none;accent-color:var(--accent)}
+.mesa.bloq .mesa-top label{cursor:default}
+.mnom{font-weight:600}
+.mcom{font-weight:400;color:var(--muted)}
+.mtrib{font-size:.82rem;color:var(--muted)}
+.mfechas{display:flex;gap:8px;flex-wrap:wrap}
+.fch{font-family:var(--f-mono);font-size:.82rem;padding:2px 8px;border:1px solid var(--line);background:var(--bg);white-space:nowrap}
+.det{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px 18px;padding:12px;background:var(--bg);border:1px dashed var(--line)}
+.det fieldset{border:0;margin:0;padding:0;min-width:0;display:flex;flex-direction:column;gap:6px}
+.det legend{font-size:.82rem;font-weight:600;padding:0;margin-bottom:4px}
+.opt{display:flex;gap:8px;align-items:flex-start;cursor:pointer;min-height:30px}
+.opt input{width:20px;height:20px;margin-top:1px;flex:none;accent-color:var(--accent)}
+.opt.off{opacity:.5;cursor:not-allowed}
+.opt small{display:block;color:var(--muted)}
+.corr{grid-column:1/-1;padding:10px 12px;background:var(--tiza-bg);border-left:4px solid var(--tiza)}
+.corr b{color:var(--red)}
+.corr ul{margin:4px 0 8px;padding-left:20px}
+
+/* Chips */
+.chip{display:inline-flex;align-items:center;gap:6px;padding:2px 9px;border-radius:99px;font-size:.78rem;font-weight:600;white-space:nowrap;background:var(--tint);color:var(--ink)}
+.chip.ok{background:var(--ok-bg);color:var(--ok)}
+.chip.warn{background:var(--warn-bg);color:var(--warn)}
+.chip.bad{background:var(--bad-bg);color:var(--bad)}
+.chip.info{background:var(--info-bg);color:var(--info)}
+.chip.mute{background:transparent;border:1px solid var(--line);color:var(--muted)}
+
+/* Mis inscripciones */
+.mis{display:grid;gap:10px}
+.ins{display:grid;grid-template-columns:1fr auto;gap:8px 14px;align-items:center;padding:12px 14px;background:var(--surface);border:1px solid var(--line)}
+.ins.baja{opacity:.62}
+.ins h3{font-size:1rem}
+.ins .meta{display:flex;flex-wrap:wrap;gap:4px 12px;color:var(--muted);font-size:.9rem}
+.ins .acc{grid-row:1/span 2;grid-column:2;display:flex;flex-direction:column;align-items:flex-end;gap:4px;text-align:right}
+@media (max-width:560px){.ins{grid-template-columns:1fr}.ins .acc{grid-row:auto;grid-column:1;align-items:stretch;text-align:left}}
+.carsel{display:flex;gap:10px;flex-wrap:wrap}
+.carbtn{flex:1 1 200px;text-align:left;padding:10px 12px;border:1.5px solid var(--line);background:var(--surface);cursor:pointer;border-radius:4px;display:flex;flex-direction:column;gap:2px}
+.carbtn[aria-pressed="true"]{border-color:var(--accent);background:var(--tint);box-shadow:inset 4px 0 0 var(--accent)}
+.carbtn b{font-size:.95rem}
+.carbtn span{font-size:.8rem;color:var(--muted)}
+.sticky-bar{position:sticky;bottom:0;background:var(--surface);border:1px solid var(--line);padding:12px 14px;display:flex;gap:12px;align-items:center;justify-content:space-between;flex-wrap:wrap;box-shadow:0 -6px 18px rgba(0,0,0,.08)}
+
+/* Panel administrativo */
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:0;border:1px solid var(--line);background:var(--surface)}
+.stat{padding:10px 14px;display:flex;flex-direction:column}
+.stat+.stat{border-left:1px solid var(--line)}
+.stat b{font-family:var(--f-display);font-size:1.7rem;line-height:1.1;font-variant-numeric:tabular-nums}
+.stat span{font-size:.78rem;color:var(--muted);font-weight:600;letter-spacing:.04em;text-transform:uppercase}
+.filtros{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:10px 14px;align-items:end}
+.tblwrap{overflow-x:auto;border:1px solid var(--line);background:var(--surface)}
+table{border-collapse:collapse;width:100%;font-size:.92rem}
+th{background:var(--tint);text-align:left;font-size:.74rem;letter-spacing:.06em;text-transform:uppercase;padding:8px 10px;white-space:nowrap;position:sticky;top:0}
+td{padding:8px 10px;border-top:1px solid var(--line);vertical-align:top}
+tr.fila{cursor:pointer}
+tr.fila:hover td{background:var(--tint)}
+tr.fila.vacia td{color:var(--muted)}
+tr.det-row>td{background:var(--bg);padding:14px}
+.num{text-align:right;font-variant-numeric:tabular-nums}
+.roster td,.roster th{padding:6px 8px}
+.roster tr.no td{text-decoration:line-through;color:var(--muted)}
+.acts{display:flex;gap:6px;flex-wrap:wrap}
+.hdr-det{display:flex;gap:10px 18px;flex-wrap:wrap;align-items:center;justify-content:space-between;margin-bottom:10px}
+.hdr-det .tiempos{display:flex;gap:4px 16px;flex-wrap:wrap;font-size:.85rem;color:var(--muted)}
+.cfg{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:12px 16px}
+.toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(20px + env(safe-area-inset-bottom,0px));background:var(--ink);color:var(--bg);padding:10px 16px;border-radius:4px;z-index:20;max-width:90vw;box-shadow:0 6px 24px rgba(0,0,0,.3)}
+.skel{height:64px;background:linear-gradient(90deg,var(--tint),var(--surface),var(--tint));background-size:200% 100%;animation:sk 1.4s linear infinite}
+@keyframes sk{to{background-position:-200% 0}}
+@media (prefers-reduced-motion:reduce){.skel{animation:none}}
+details>summary{cursor:pointer;font-weight:600}
+</style>
+</head>
+<body>
+<div class="wrap" id="root">
+  <header class="mast">
+    <div class="sello"><span>Instituto Superior<br>de Profesorado</span><b>N° 66</b></div>
+    <div class="mast-t"><p class="kicker">Calchaquí · Santa Fe</p><h1>Mesas de examen</h1><p class="sub">Turno noviembre – diciembre 2026</p></div>
+  </header>
+  <nav class="tabs" id="tabs" hidden><button class="tab" data-tab="insc" aria-selected="true">Inscripción</button><button class="tab" data-tab="adm" aria-selected="false">Panel de la institución</button></nav>
+  <div id="avisos"></div>
+  <main id="vistaAlumno" style="display:flex;flex-direction:column;gap:22px">
+    <section id="plazos" class="plazos" aria-label="Plazos"></section>
+    <section id="mias" aria-live="polite"></section>
+    <section id="formSec"></section>
+  </main>
+  <main id="vistaAdmin" hidden></main>
+</div>
+<script>
+/* ===== DATOS: carreras, mesas del turno nov-dic 2026 y correlatividades para rendir ===== */
+const CARRERAS = {
+  prim: { nombre: 'Profesorado de Educación Primaria', plan: '528/09', esp: 'PROFESORADO DE EDUCACIÓN PRIMARIA', corto: 'Prof. Primaria', anios: 4 },
+  bio:  { nombre: 'Profesorado de Educación Secundaria en Biología', plan: '2090/15', esp: 'PROFESORADO DE EDUCACIÓN SECUNDARIA EN BIOLOGÍA', corto: 'Prof. Biología', anios: 4 },
+  tsgo: { nombre: 'Tecnicatura Superior en Gestión de las Organizaciones', plan: '378/16', esp: 'TÉCNICO SUPERIOR EN GESTIÓN DE LAS ORGANIZACIONES', corto: 'TS Gestión de las Org.', anios: 3 },
+  enf:  { nombre: 'Tecnicatura Superior en Enfermería', plan: '2487/17', esp: 'TÉCNICO SUPERIOR EN ENFERMERÍA', corto: 'TS Enfermería', anios: 3 }
+};
+const CAR_ORDER = ['prim', 'bio', 'tsgo', 'enf'];
+
+/* Grupo: [fecha 1º llamado dd-mm, fecha 2º llamado dd-mm, esTaller, [[año+comisión, materia, tribunal], ...]]
+   Año+comisión: '1' = sin comisión · '2A' = comisión A · '1AB' = mesa común A y B (el estudiante elige) */
+const GRUPOS = {
+  bio: [
+    ['24-11', '15-12', 0, [
+      ['1', 'Biología I', 'Bellini · Goyochea · Casco'],
+      ['2', 'Instituciones Educativas', 'Casco · Bellini · Goyochea'],
+      ['3', 'Filosofía', 'Goyochea · Casco · Bellini']]],
+    ['25-11', '09-12', 0, [
+      ['1', 'Ecología', 'Wuthrich · Galván · Fabricius'],
+      ['2', 'Psicología y Educación', 'Goyochea · Favatier · Balderrama Mag'],
+      ['3', 'UDI', 'Balderrama Mag · Goyochea · Favatier'],
+      ['4', 'Epistemología de las Ciencias Naturales', 'Galván · Wuthrich · Fabricius']]],
+    ['26-11', '10-12', 0, [
+      ['1', 'Elementos de Matemática y Bioestadística', 'Favatier · Fabre P · Cialoni C'],
+      ['2', 'Biología II', 'Galván · Goyochea · Fabricius'],
+      ['3', 'Historia y Política de la Educación Argentina', 'Balderrama Mar · Casco · Morbelli'],
+      ['4', 'Ética y Trabajo Docente', 'Casco · Balderrama Mar · Morbelli']]],
+    ['27-11', '11-12', 0, [
+      ['1', 'Historia de las Ciencias Naturales', 'Gomez · Galván · Fedalci'],
+      ['2', 'Genética', 'Galván · Gomez E · Fedalci'],
+      ['3', 'Biología III', 'Galván · Gomez E · Fedalci']]],
+    ['30-11', '21-12', 1, [
+      ['1', 'Laboratorio de Ciencias Naturales', 'Bellini']]],
+    ['30-11', '21-12', 0, [
+      ['2', 'Didáctica y Curriculum', 'Balderrama Mar · Morbelli · Fabricius'],
+      ['3', 'Biología Humana y Salud I', 'Galván · Alvarenga · Sager'],
+      ['4', 'Biología IV', 'Galván · Sager · Alvarenga']]],
+    ['01-12', '21-12', 1, [
+      ['3', 'Didáctica de la Biología II', 'Wuthrich']]],
+    ['01-12', '22-12', 0, [
+      ['1', 'Pedagogía', 'Balderrama Mar · Carrara · Goyochea'],
+      ['2', 'Biofísica', 'Fedalci · Burella · Fabricius'],
+      ['3', 'Sujetos de la Educación Secundaria', 'Goyochea · Balderrama Mar · Carrara'],
+      ['4', 'Educación Sexual Integral', 'Carrara · Balderrama Mar · Goyochea']]],
+    ['02-12', '16-12', 1, [
+      ['2', 'Didáctica de la Biología I', 'Bargetto C'],
+      ['4', 'Taller de Modelización y Recursos Didácticos en Biología', 'Bargetto F']]],
+    ['02-12', '16-12', 0, [
+      ['1', 'Ciencias de la Tierra', 'Burella · Morbelli · Fabricius'],
+      ['2', 'Educación Ambiental', 'Morbelli · Fabricius · Burella'],
+      ['3', 'Metodología de la Investigación', 'Morbelli · Fabricius · Burella'],
+      ['4', 'Biología Humana y Salud II', 'Galván · Bellini · Casco']]],
+    ['03-12', '17-12', 1, [
+      ['4', 'Prácticas de la Investigación', 'Velazquez P']]],
+    ['03-12', '17-12', 0, [
+      ['1', 'Química I', 'Morbelli · Velazquez · Bargetto F'],
+      ['2', 'Química II', 'Morbelli · Velazquez · Bargetto F'],
+      ['3', 'Evolución', 'Galván · Fabricius · Goyochea'],
+      ['4', 'Proyectos de Extensión', 'Bargetto F · Morbelli · Velazquez']]],
+    ['03-12', '17-12', 1, [
+      ['1', 'Taller de Práctica I', 'Casco · Bargetto C'],
+      ['2', 'Taller de Práctica II', 'Casco · Gomez']]]
+  ],
+
+  tsgo: [
+    ['24-11', '15-12', 0, [
+      ['1', 'Economía', 'Wilheim · Cialoni G · Bargetto T'],
+      ['2', 'Legislación Comercial y Tributaria', 'Cialoni G · Wilheim · Bargetto T'],
+      ['3', 'Sistemas de Información para la Gestión de las Organizaciones', 'Bargetto T · Cialoni G · Wilheim']]],
+    ['25-11', '09-12', 1, [
+      ['1', 'Comunicación', 'Medina']]],
+    ['25-11', '09-12', 0, [
+      ['1', 'Contabilidad', 'Bais · Arroyo · Sacco'],
+      ['2', 'Problemáticas Socio-Contemporáneas', 'Arroyo · Sacco · Bais'],
+      ['3', 'Control de Gestión', 'Bais · Sacco · Arroyo']]],
+    ['26-11', '10-12', 0, [
+      ['1', 'Matemática y Estadística', 'Favatier · Fabre P · Cialoni C'],
+      ['2', 'Gestión de Costos', 'Cialoni C · Fabre P · Favatier'],
+      ['3', 'Estrategia Empresarial', 'Fabre P · Cialoni C · Favatier']]],
+    ['27-11', '11-12', 0, [
+      ['1', 'Gestión de la Producción', 'Marchetti · Zanel · Cialoni C'],
+      ['2', 'Práctica Profesionalizante I', 'Cialoni C · Zanel · Marchetti'],
+      ['3', 'Legislación Laboral', 'Zanel · Marchetti · Cialoni C']]],
+    ['30-11', '21-12', 1, [
+      ['2', 'Inglés Técnico', 'Ochoa']]],
+    ['30-11', '21-12', 0, [
+      ['1', 'Administración', 'Marchetti · Bargetto T · Bais'],
+      ['2', 'Gestión Contable', 'Bais · Marchetti · Bargetto T'],
+      ['3', 'Gestión Financiera', 'Bargetto T · Marchetti · Bais']]],
+    ['01-12', '22-12', 1, [
+      ['1', 'UDI I', 'Medina'],
+      ['2', 'Innovación y Desarrollo Emprendedor', 'Bais']]],
+    ['01-12', '22-12', 0, [
+      ['3', 'Gest. Seg. e Hig. Amb.', 'Fabre R · Bargetto T · Lopez O']]],
+    ['02-12', '16-12', 1, [
+      ['2', 'UDI II', 'Arroyo']]],
+    ['02-12', '16-12', 0, [
+      ['1', 'Informática', 'Sacco · Bais · Obian'],
+      ['2', 'Gestión de Comercialización e Investigación Comercial', 'Bais · Sacco · Obian'],
+      ['3', 'Ética y Responsabilidad Social', 'Obian · Bais · Sacco']]],
+    ['03-12', '17-12', 1, [
+      ['1', 'Gestión del Talento Humano', 'Peresón · Fabre R · Cialoni C'],
+      ['3', 'Práctica Profesionalizante II', 'Zorzón · Peresón · Cialoni C']]],
+    ['04-12', '18-12', 1, [
+      ['3', 'Evaluación y Administración de Proyectos de Inversión', 'Fabre P · Zanel D · Cialoni C']]]
+  ],
+
+  prim: [
+    ['24-11', '15-12', 0, [
+      ['1A', 'Historia Argentina y Latinoamericana', 'Balderrama Mag · Fantin · Ramirez'],
+      ['1B', 'Historia Argentina y Latinoamericana', 'Galizzi · Attias · Carrara'],
+      ['2A', 'Filosofía de la Educación', 'Carrara · Attias · Galizzi'],
+      ['2B', 'Matemática y su Didáctica I', 'Razinskas · Humoller · Dornet'],
+      ['3A', 'Historia Social de la Educación y Política Educativa Argentina', 'Attias · Carrara · Galizzi'],
+      ['3B', 'Matemática y su Didáctica II', 'Favatier · Suligoy · Velazquez P']]],
+    ['25-11', '09-12', 1, [
+      ['1AB', 'Resolución de Problemas y Creatividad', 'Razinskas'],
+      ['1AB', 'Movimiento y Cuerpo I', 'Corti'],
+      ['2AB', 'Movimiento y Cuerpo II', 'Brouet V']]],
+    ['25-11', '09-12', 0, [
+      ['1AB', 'Pedagogía', 'Attias · Contreras · Sager'],
+      ['2AB', 'Didáctica General', 'Attias · Sager · Contreras'],
+      ['3A', 'Alfabetización Inicial', 'Galarza · Obian · Corti'],
+      ['3B', 'Historia Social de la Educación y Política Educativa Argentina', 'Obian · Galarza · Corti']]],
+    ['26-11', '10-12', 0, [
+      ['1AB', 'Psicología y Educación', 'Gioja · Theumer F · Humoller'],
+      ['2B', 'Sujetos de la Educación Primaria', 'Humoller · Theumer · Gioja'],
+      ['3AB', 'Tecnologías de la Información y la Comunicación', 'Razinskas · Bargetto T · Sancho']]],
+    ['27-11', '11-12', 0, [
+      ['1AB', 'Problemáticas Contemporáneas de la Educación Primaria I', 'Attias · Suligoy · Medina'],
+      ['2AB', 'Lengua y su Didáctica', 'Medina · Suligoy · Attias'],
+      ['3AB', 'Problemáticas Contemporáneas de la Educación Primaria II', 'Attias · Suligoy · Medina']]],
+    ['30-11', '21-12', 1, [
+      ['1AB', 'Área Estético-Expresiva I', 'Sancho · Sutter · Brouet · Zordán'],
+      ['3AB', 'Área Estético-Expresiva II', 'Sancho · Sutter · Agüero']]],
+    ['30-11', '21-12', 0, [
+      ['1AB', 'Sociología de la Educación', 'Balderrama Mar · Morbelli · Fabricius'],
+      ['2A', 'Matemática y su Didáctica I', 'Razinskas · Corti · Theumer'],
+      ['2B', 'Filosofía de la Educación', 'Gioja · Galarza · Comizzo'],
+      ['3AB', 'Literatura y su Didáctica', 'Galarza · Gioja · Comizzo']]],
+    ['01-12', '22-12', 1, [
+      ['1AB', 'Ciencias Naturales para una Cultura Ciudadana', 'Morbelli']]],
+    ['01-12', '22-12', 0, [
+      ['2AB', 'Ciencias Naturales y su Didáctica I', 'Bargetto C · Bellini · Bargetto F'],
+      ['3AB', 'Ciencias Naturales y su Didáctica II', 'Bargetto F · Alvarenga · Bellini']]],
+    ['02-12', '16-12', 1, [
+      ['1AB', 'Problemáticas de las Ciencias Sociales', 'Balderrama Mag · Galizzi']]],
+    ['02-12', '16-12', 0, [
+      ['2A', 'Sujetos de la Educación Primaria', 'Velazquez · Balderrama Mar · Sager'],
+      ['2B', 'Ciencias Sociales y su Didáctica I', 'Perez · Obian · Contreras'],
+      ['3AB', 'Ciencias Sociales y su Didáctica II', 'Perez · Obian · Contreras'],
+      ['4AB', 'Ética, Trabajo Docente, Derechos Humanos y Ciudadanía', 'Balderrama Mar · Sager · Velazquez']]],
+    ['03-12', '17-12', 1, [
+      ['1AB', 'Comunicación y Expresión Oral y Escrita', 'Galarza'],
+      ['3AB', 'EDI I y EDI II', 'Sutter · Balderrama Mag']]],
+    ['03-12', '17-12', 0, [
+      ['2A', 'Ciencias Sociales y su Didáctica I', 'Balderrama Mag · Sutter · Gioja'],
+      ['2B', 'Conocimiento y Educación', 'Gioja · Sutter · Balderrama Mag'],
+      ['3A', 'Matemática y su Didáctica II', 'Favatier · Razinskas · Bargetto T'],
+      ['4AB', 'Sexualidad Humana y Educación', 'Gomez E · Galarza · Dornet'],
+      ['3B', 'Alfabetización Inicial', 'Galarza · Dornet · Gomez E']]],
+    ['04-12', '18-12', 0, [
+      ['2A', 'Conocimiento y Educación', 'Carrara · Attias · Suligoy']]]
+  ],
+
+  enf: [
+    ['24-11', '15-12', 0, [
+      ['1A', 'Fundamentos del Cuidado en Enfermería', 'Fantin · Ramirez · Balderrama Mag'],
+      ['2A', 'Problemáticas Socio-Contemporáneas', 'Balderrama Mag · Ramirez · Fantin'],
+      ['3A', 'Ética y Responsabilidad Social', 'Cialoni G · Wilheim · Bargetto T'],
+      ['3B', 'Ética y Responsabilidad Social', 'Balderrama Mag · Fantin · Ramirez']]],
+    ['25-11', '09-12', 0, [
+      ['1A', 'Biología Humana I', 'Alvarenga · Bargetto F · Lopez O'],
+      ['2', 'Biología Humana II', 'Bargetto F · Alvarenga · Lopez O']]],
+    ['26-11', '10-12', 0, [
+      ['1A', 'Práctica Profesionalizante I', 'Ramirez · Bargetto C · Tula'],
+      ['2', 'Bioseguridad y Medio Ambiente en el Trabajo', 'Fabre R · Fantin · Beccaria']]],
+    ['27-11', '11-12', 0, [
+      ['1A', 'Sujeto, Cultura y Sociedad I', 'Carrara · Patricelli · Piersimoni'],
+      ['2', 'Sujeto, Cultura y Sociedad II', 'Patricelli · Carrara · Piersimoni'],
+      ['3AB', 'Derecho y Legislación Laboral', 'Cialoni G · Zanel · Balderrama Mag']]],
+    ['30-11', '21-12', 0, [
+      ['1A', 'Cuidados de Enfermería en la Comunidad y en la Familia', 'Bogner · Fantin · Ramirez'],
+      ['3AB', 'Investigación en Enfermería', 'Beccaria · Bargetto F · Tula']]],
+    ['01-12', '22-12', 1, [
+      ['1', 'Comunicación', 'Medina'],
+      ['2', 'Informática en Salud', 'Piriz'],
+      ['2', 'UDI II', 'Balderrama Mag'],
+      ['3AB', 'Inglés Técnico', 'Seregni · Maturana']]],
+    ['01-12', '22-12', 0, [
+      ['2', 'Cuidados de Enfermería a los Adultos y Adultos Mayores', 'Fantin · Alvarez · Patricelli'],
+      ['3AB', 'Cuidados de Enfermería en Salud Mental', 'Alvarez · Patricelli · Fantin']]],
+    ['02-12', '16-12', 1, [
+      ['1A', 'UDI I', 'Medina']]],
+    ['02-12', '16-12', 0, [
+      ['2', 'Farmacología', 'Fantin · Bogner · Cialoni G'],
+      ['3AB', 'Cuidados de Enfermería al Niño y al Adolescente', 'Fantin · Bogner · Cialoni G']]],
+    ['03-12', '17-12', 0, [
+      ['1A', 'Salud Pública', 'Fantin · Bargetto C · Tula'],
+      ['2', 'Práctica Profesionalizante II', 'Fantin · Tula · Bargetto C'],
+      ['3AB', 'Práctica Profesionalizante III', 'Bogner · Ramirez · Patricelli']]],
+    ['04-12', '18-12', 0, [
+      ['3AB', 'Organización y Gestión de la Salud', 'Piersimoni · Bogner · Carrara']]]
+  ]
+};
+
+/* Correlatividades PARA RENDIR. a = debe tener aprobada · r = debe tener regularizada */
+const CORR = {
+  prim: {
+    'Didáctica General': { a: ['Pedagogía', 'Psicología y Educación'] },
+    'Movimiento y Cuerpo II': { a: ['Movimiento y Cuerpo I'] },
+    'Matemática y su Didáctica I': { a: ['Resolución de Problemas y Creatividad'] },
+    'Ciencias Naturales y su Didáctica I': { a: ['Ciencias Naturales para una Cultura Ciudadana'] },
+    'Ciencias Sociales y su Didáctica I': { a: ['Problemáticas de las Ciencias Sociales'] },
+    'Lengua y su Didáctica': { a: ['Comunicación y Expresión Oral y Escrita'] },
+    'Sujetos de la Educación Primaria': { a: ['Psicología y Educación'] },
+    'Historia Social de la Educación y Política Educativa Argentina': { a: ['Historia Argentina y Latinoamericana', 'Sociología de la Educación'] },
+    'Literatura y su Didáctica': { a: ['Didáctica General', 'Lengua y su Didáctica'] },
+    'Alfabetización Inicial': { a: ['Didáctica General', 'Lengua y su Didáctica'] },
+    'Matemática y su Didáctica II': { a: ['Matemática y su Didáctica I', 'Didáctica General'] },
+    'Ciencias Naturales y su Didáctica II': { a: ['Ciencias Naturales y su Didáctica I', 'Didáctica General'] },
+    'Ciencias Sociales y su Didáctica II': { a: ['Ciencias Sociales y su Didáctica I', 'Didáctica General'] },
+    'Área Estético-Expresiva II': { a: ['Área Estético-Expresiva I'] },
+    'Problemáticas Contemporáneas de la Educación Primaria II': { a: ['Problemáticas Contemporáneas de la Educación Primaria I'] },
+    'Ética, Trabajo Docente, Derechos Humanos y Ciudadanía': { a: ['Filosofía de la Educación', 'Conocimiento y Educación', 'Historia Social de la Educación y Política Educativa Argentina'] }
+  },
+  bio: {
+    'Didáctica y Curriculum': { a: ['Pedagogía'] },
+    'Instituciones Educativas': { a: ['Pedagogía'] },
+    'Biología II': { a: ['Biología I'] },
+    'Biofísica': { a: ['Elementos de Matemática y Bioestadística'] },
+    'Química II': { a: ['Química I'] },
+    'Educación Ambiental': { a: ['Ciencias de la Tierra', 'Ecología'] },
+    'Genética': { a: ['Biología I', 'Química I'] },
+    'Didáctica de la Biología I': { a: ['Laboratorio de Ciencias Naturales'] },
+    'Historia y Política de la Educación Argentina': { a: ['Pedagogía'] },
+    'Filosofía': { a: ['Pedagogía'] },
+    'Biología III': { a: ['Biología II'] },
+    'Evolución': { a: ['Ciencias de la Tierra', 'Ecología', 'Biología II', 'Genética'] },
+    'Biología Humana y Salud I': { a: ['Biología II', 'Química II', 'Biofísica', 'Genética'] },
+    'Didáctica de la Biología II': { a: ['Didáctica de la Biología I', 'Didáctica y Curriculum'] },
+    'Sujetos de la Educación Secundaria': { a: ['Psicología y Educación'] },
+    'Ética y Trabajo Docente': { a: ['Filosofía'] },
+    'Educación Sexual Integral': { a: ['Sujetos de la Educación Secundaria'] },
+    'Prácticas de la Investigación': { a: ['Metodología de la Investigación'] },
+    'Biología IV': { a: ['Biología III'] },
+    'Biología Humana y Salud II': { a: ['Biología Humana y Salud I', 'Evolución', 'Biología III'] },
+    'Epistemología de las Ciencias Naturales': { a: ['Filosofía'] },
+    'Taller de Modelización y Recursos Didácticos en Biología': { a: ['Práctica Docente III'] }
+  },
+  tsgo: {
+    'Gestión de Costos': { a: ['Economía', 'Matemática y Estadística', 'Contabilidad'] },
+    'Gestión Contable': { a: ['Economía', 'Matemática y Estadística', 'Contabilidad'] },
+    'Estrategia Empresarial': { a: ['Gestión de la Producción', 'Gestión del Talento Humano', 'Gestión de Comercialización e Investigación Comercial', 'Gestión Contable'] },
+    'Gestión Financiera': { a: ['Gestión Contable'] },
+    'Sistemas de Información para la Gestión de las Organizaciones': { a: ['Gestión Contable'] },
+    'Evaluación y Administración de Proyectos de Inversión': { a: ['Gestión Contable'] },
+    'Práctica Profesionalizante II': { a: ['Práctica Profesionalizante I', 'Innovación y Desarrollo Emprendedor'] }
+  },
+  enf: {
+    'Biología Humana II': { a: ['Biología Humana I'] },
+    'Sujeto, Cultura y Sociedad II': { a: ['Sujeto, Cultura y Sociedad I'] },
+    'Cuidados de Enfermería a los Adultos y Adultos Mayores': { a: ['Fundamentos del Cuidado en Enfermería', 'Cuidados de Enfermería en la Comunidad y en la Familia'] },
+    'Cuidados de Enfermería al Niño y al Adolescente': { a: ['Cuidados de Enfermería a los Adultos y Adultos Mayores'] },
+    'Práctica Profesionalizante II': { a: ['Práctica Profesionalizante I'] },
+    'Práctica Profesionalizante III': { a: ['Práctica Profesionalizante II'] }
+  }
+};
+
+/* Color de cada año, como en las referencias de los cronogramas en papel */
+const ANIO_COLOR = {
+  prim: { 1: 'var(--y-azul)', 2: 'var(--y-rojo)', 3: 'var(--y-verde)', 4: 'var(--y-violeta)' },
+  tsgo: { 1: 'var(--y-naranja)', 2: 'var(--y-celeste)', 3: 'var(--y-lila)' },
+  enf:  { 1: 'var(--y-naranja)', 2: 'var(--y-celeste)', 3: 'var(--y-lila)' },
+  bio:  { 4: 'var(--y-verde)' }
+};
+/* ===== APLICACIÓN ===== */
+(async function () {
+'use strict';
+const H = 3600000, OFF = -3 * H, YEAR = 2026;
+const DIAS = ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'];
+const DIAS3 = ['dom', 'lun', 'mar', 'mié', 'jue', 'vie', 'sáb'];
+const JSPDF = 'https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js';
+const XLSXURL = 'https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js';
+const pad = n => String(n).padStart(2, '0');
+const $ = (s, r) => (r || document).querySelector(s);
+const $$ = (s, r) => [].slice.call((r || document).querySelectorAll(s));
+const esc = s => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+const slug = s => s.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+const cmpNombre = (a, b) => (a.ap + ' ' + a.no).localeCompare(b.ap + ' ' + b.no, 'es');
+const art = t => new Date(t + OFF);
+const dm = t => { const a = art(t); return pad(a.getUTCDate()) + '/' + pad(a.getUTCMonth() + 1); };
+const dmy = t => { const a = art(t); return dm(t) + '/' + a.getUTCFullYear(); };
+const hm = t => { const a = art(t); return pad(a.getUTCHours()) + ':' + pad(a.getUTCMinutes()); };
+const dia3 = t => DIAS3[art(t).getUTCDay()];
+const diaL = t => DIAS[art(t).getUTCDay()];
+const fFecha = t => dia3(t) + ' ' + dm(t);
+const fFH = t => diaL(t) + ' ' + dm(t) + ', ' + hm(t) + ' h';
+const fDNI = d => String(d || '').replace(/\D/g, '').replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+const ordl = l => l + 'º';
+const tsMs = dmStr => { const p = dmStr.split('-'); return Date.parse(YEAR + '-' + p[1] + '-' + p[0] + 'T18:40:00-03:00'); };
+
+/* ---------- Mesas ---------- */
+const MESAS = [], MB = {};
+CAR_ORDER.forEach(car => {
+  GRUPOS[car].forEach(g => {
+    g[3].forEach(row => {
+      const mm = row[0].match(/^(\d)([AB]{0,2})$/);
+      const anio = +mm[1], com = mm[2];
+      let id = car + '-' + anio + com + '-' + slug(row[1]);
+      if (MB[id]) id += '-' + MESAS.length;
+      const m = { id, car, anio, com, comisiones: com.split('').filter(Boolean), materia: row[1], trib: row[2], taller: !!g[2], f: [tsMs(g[0]), tsMs(g[1])] };
+      MB[id] = m; MESAS.push(m);
+    });
+  });
+});
+const mesaNombre = m => m.materia + (m.com.length === 1 ? ' · Com. ' + m.com : '');
+const corrDe = m => (CORR[m.car] || {})[m.materia] || null;
+
+/* ---------- Configuración (editable por la administración) ---------- */
+const CFG_DEF = { desde: '2026-11-03T00:00:00-03:00', hasta: '2026-11-16T23:59:59-03:00', bajaH: 48, listadoH: 24, reinscD: 1, habiles: true, feriados: '23/11/2026, 07/12/2026, 08/12/2026, 25/12/2026', emailInst: 'mesasexamenesisp66@gmail.com', pagoInfo: 'Pasá por secretaría a firmar tu ficha y abonar la inscripción. La institución imprime la ficha con los datos que cargaste.' };
+let cfg = Object.assign({}, CFG_DEF);
+function feriados() {
+  const s = new Set();
+  String(cfg.feriados || '').split(/[\s,;]+/).forEach(x => {
+    let m = x.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})$/);
+    if (m) s.add(m[3] + '-' + pad(m[2]) + '-' + pad(m[1]));
+    else if (/^\d{4}-\d{2}-\d{2}$/.test(x)) s.add(x);
+  });
+  return s;
+}
+function esHabil(t, fer) { const a = art(t), d = a.getUTCDay(); return d !== 0 && d !== 6 && !fer.has(a.toISOString().slice(0, 10)); }
+function restar(t, h) {
+  if (!cfg.habiles) return t - h * H;
+  const fer = feriados(); let n = h, g = 0;
+  while (n > 0 && g++ < 20000) { t -= H; if (esHabil(t, fer)) n--; }
+  return t;
+}
+const limBaja = (m, l) => restar(m.f[l - 1], +cfg.bajaH);
+const limListado = (m, l) => restar(m.f[l - 1], +cfg.listadoH);
+/* Volver a inscribirse al 2º llamado: desde que se rindió el 1º, el mismo día o hasta el día siguiente (reinscD = días después) */
+const finReinsc = m => { const a = art(m.f[0]); return Date.UTC(a.getUTCFullYear(), a.getUTCMonth(), a.getUTCDate() + 1 + (+cfg.reinscD || 0)) - OFF - 1; };
+const inscAbierta = now => now >= Date.parse(cfg.desde) && now <= Date.parse(cfg.hasta);
+function estadoML(m, l, now) {
+  const f = m.f[l - 1];
+  if (now > f) return { k: 'rendida', t: 'Rendida', c: 'mute' };
+  if (now >= limListado(m, l)) return { k: 'definitivo', t: 'Listado definitivo', c: 'ok' };
+  if (now >= limBaja(m, l)) return { k: 'revision', t: 'En revisión', c: 'warn' };
+  return inscAbierta(now) ? { k: 'abierta', t: 'Inscripción abierta', c: 'info' } : { k: 'bajas', t: 'Solo bajas', c: 'info' };
+}
+
+/* ---------- Estado ---------- */
+const S = {
+  db: null, user: null, uid: null, isAdmin: false, canWrite: null, dl: null,
+  f: {}, car: null, sel: {}, mode: 'insc', bj: new Set(), bjAll: false, hist: null, res: null, dniPrev: '',
+  cod: [], codIds: new Set(), obs: [], revs: {}, man: [], tab: 'insc', cargando: false, cargaRes: null,
+  fCar: '', fLl: '', fFecha: '', q: '', soloCon: false, soloPago: false, open: new Set(), add: null
+};
+const useCap = n => { try { return window.claude && window.claude.use ? window.claude.use(n).catch(() => null) : Promise.resolve(null); } catch (e) { return Promise.resolve(null); } };
+const libs = {};
+const loadLib = url => libs[url] || (libs[url] = new Promise((res, rej) => { const s = document.createElement('script'); s.src = url; s.onload = res; s.onerror = () => rej(new Error('No se pudo cargar una librería necesaria')); document.head.appendChild(s); }));
+let toastT;
+function toast(msg) {
+  let t = $('#toast'); if (!t) { t = document.createElement('div'); t.id = 'toast'; t.className = 'toast'; t.setAttribute('role', 'status'); document.body.appendChild(t); }
+  t.textContent = msg; t.hidden = false; clearTimeout(toastT); toastT = setTimeout(() => { t.hidden = true; }, 4200);
+}
+async function descargar(filename, data) {
+  const dl = S.dl || (S.dl = await useCap('downloads'));
+  if (!dl) { toast('Esta vista no permite descargar archivos. Abrí la página desde claude.ai.'); return; }
+  try { await dl.save({ filename, data }); toast('Archivo guardado.'); }
+  catch (e) { if (e && e.code === 'declined') return; toast('No se pudo descargar: ' + ((e && e.message) || 'error')); }
+}
+
+/* ---------- Reglas por mesa y llamado para el estudiante ---------- */
+/* Una sola mesa por día; solo estas dos materias de Biología pueden coincidir entre sí */
+const EXENTAS = ['Prácticas de la Investigación', 'Proyectos de Extensión'];
+const exenta = m => m.car === 'bio' && EXENTAS.indexOf(m.materia) >= 0;
+const diaDe = t => art(t).toISOString().slice(0, 10);
+function choqueDia(m, l, items) {
+  const d = diaDe(m.f[l - 1]);
+  const o = items.find(i => i.e === 'a' && i.m !== m.id && MB[i.m] && !(exenta(m) && exenta(MB[i.m])) && diaDe(MB[i.m].f[i.l - 1]) === d);
+  return o ? MB[o.m] : null;
+}
+function estadoAl(m, items, now) {
+  const mine = items.filter(i => i.m === m.id), act = mine.filter(i => i.e === 'a');
+  const a1 = act.find(i => i.l === 1), a2 = act.find(i => i.l === 2), tuvo2 = mine.some(i => i.l === 2);
+  const open = inscAbierta(now); let l1 = null, l2 = null;
+  if (a1) l1 = 'Ya estás inscripto al 1º llamado.';
+  else if (a2) l1 = 'Estás inscripto al 2º llamado y no se puede pasar al 1º.';
+  else if (tuvo2) l1 = 'Te inscribiste al 2º llamado y no se puede pasar al 1º.';
+  else if (!open) l1 = 'La inscripción está cerrada.';
+  else if (now >= limBaja(m, 1)) l1 = 'Venció el plazo para este llamado.';
+  let reinsc = false;
+  if (a2) l2 = 'Ya estás inscripto al 2º llamado.';
+  else if (a1) {
+    if (now < m.f[0]) l2 = 'Ya estás inscripto al 1º llamado. Para pasarte al 2º, primero dá de baja el 1º.';
+    else if (now <= finReinsc(m)) { reinsc = true; }
+    else l2 = 'Venció el plazo para inscribirte al 2º llamado.';
+  } else if (!open) l2 = 'La inscripción está cerrada.';
+  else if (now >= limBaja(m, 2)) l2 = 'Venció el plazo para este llamado.';
+  [1, 2].forEach(n => {
+    if ((n === 1 ? l1 : l2) !== null || (n === 2 && a2) || (n === 1 && a1)) return;
+    const c = choqueDia(m, n, items);
+    if (c) { const msg = 'Ya estás inscripto a «' + c.materia + '» ese día. Solo se puede rendir una mesa por día.'; if (n === 1) l1 = msg; else { l2 = msg; reinsc = false; } }
+  });
+  return { act, l1, l2, reinsc };
+}
+
+/* ---------- Códigos de inscripción (sin cuenta) ---------- */
+const fnv = (s, seed) => { let h = seed || 2166136261; for (let i = 0; i < s.length; i++) { h ^= s.charCodeAt(i); h = Math.imul(h, 16777619) >>> 0; } return h >>> 0; };
+const ckOf = s => fnv(s).toString(36).padStart(7, '0').slice(-7);
+const b64e = s => btoa(unescape(encodeURIComponent(s))).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+const b64d = s => decodeURIComponent(escape(atob(s.replace(/-/g, '+').replace(/_/g, '/'))));
+function armarCodigo(p, car, its, t) {
+  const o = { v: 1, t, a: p.apellidos, n: p.nombres, d: p.dni, tl: p.tel || '', em: p.email || '', li: p.libreta || '', c: car, i: its.map(x => [x.m.slice(car.length + 1), x.l, x.c || '', x.k || '', x.d ? 1 : 0, x.e]) };
+  const body = b64e(JSON.stringify(o));
+  return 'ISP66.' + body + '.' + ckOf(body);
+}
+/* Lee todos los códigos que haya en un texto pegado (mails, whatsapp, etc.) */
+function leerCodigos(txt) {
+  const re = /ISP66\.([A-Za-z0-9_\-\s]+?)\.([0-9a-z]{7})(?![0-9a-z])/g, out = []; let m;
+  while ((m = re.exec(txt || ''))) {
+    const body = m[1].replace(/\s+/g, '');
+    if (ckOf(body) !== m[2]) { out.push({ err: 'Código incompleto o modificado (' + body.slice(0, 12) + '…)' }); continue; }
+    try {
+      const o = JSON.parse(b64d(body));
+      if (!o || o.v !== 1 || !CARRERAS[o.c] || !/^\d{7,8}$/.test(String(o.d)) || !Array.isArray(o.i) || !o.i.length || !(o.t > 0)) throw new Error('formato');
+      const evs = [];
+      o.i.forEach(x => {
+        const id = o.c + '-' + x[0];
+        if (!MB[id] || (x[1] !== 1 && x[1] !== 2) || (x[5] !== 'a' && x[5] !== 'b')) throw new Error('mesa');
+        evs.push({ dni: String(o.d), ap: String(o.a || '').slice(0, 80), no: String(o.n || '').slice(0, 80), tel: String(o.tl || '').slice(0, 40), em: String(o.em || '').slice(0, 80), li: String(o.li || '').slice(0, 30), m: id, l: x[1], c: x[2] === 'L' ? 'L' : 'R', k: String(x[3] || '').slice(0, 2), d: x[4] ? 1 : 0, e: x[5], t: Math.round(o.t) });
+      });
+      out.push({ evs });
+    } catch (e) { out.push({ err: 'Código con datos que no se reconocen (' + body.slice(0, 12) + '…)' }); }
+  }
+  return out;
+}
+const evId = e => 'c' + fnv([e.dni, e.m, e.l, e.e, e.t].join('|')).toString(36) + fnv([e.t, e.e, e.l, e.m, e.dni].join('~'), 99991).toString(36);
+
+/* ---------- Historial local (solo para avisar al estudiante; la institución decide con los códigos que recibe) ---------- */
+const HKEY = 'isp66_hist_2026';
+function hLoad() { if (S.hist) return S.hist; let h = []; try { h = JSON.parse(localStorage.getItem(HKEY) || '[]'); if (!Array.isArray(h)) h = []; } catch (e) { h = []; } return (S.hist = h); }
+function hAdd(evs) { const h = hLoad(); evs.forEach(e => h.push(e)); try { localStorage.setItem(HKEY, JSON.stringify(h)); } catch (e) { /* sin almacenamiento */ } }
+function itemsDe(dni, hist) {
+  const items = [];
+  (hist || []).filter(e => e.dni === dni).sort((a, b) => a.t - b.t).forEach(e => {
+    if (e.e === 'a') items.push({ m: e.m, l: e.l, e: 'a', t: e.t });
+    else { const i = items.find(x => x.m === e.m && x.l === e.l && x.e === 'a'); if (i) i.e = 'b'; }
+  });
+  return items;
+}
+const dniForm = () => String(S.f.dni || '').replace(/[.\s]/g, '');
+const misItems = () => /^\d{7,8}$/.test(dniForm()) ? itemsDe(dniForm(), hLoad()) : [];
+
+/* ---------- Cabecera, plazos, avisos ---------- */
+function renderPlazos() {
+  const h = Date.parse(cfg.hasta), d = Date.parse(cfg.desde), now = Date.now();
+  const hh = hm(h) === '23:59' ? '24' : hm(h);
+  let x = '<div class="plazo"><span class="k">Inscripción</span><span class="v">' +
+    (now < d ? 'desde el ' + diaL(d) + ' ' + dm(d) + ' · ' : '') + 'hasta el ' + diaL(h).toLowerCase() + ' ' + dm(h) + ' a las ' + hh + ' h</span></div>' +
+    '<div class="plazo"><span class="k">Baja de la inscripción</span><span class="v">hasta ' + esc(cfg.bajaH) + ' h ' + (cfg.habiles ? 'hábiles ' : '') + 'antes de cada mesa</span></div>' +
+    '<div class="plazo"><span class="k">Exámenes</span><span class="v">desde las 18:40 h · presencial</span></div>';
+  if (cfg.pagoInfo) x += '<div class="plazo"><span class="k">Firma y pago</span><span class="v">' + esc(cfg.pagoInfo) + '</span></div>';
+  $('#plazos').innerHTML = x;
+}
+function renderAvisos() { $('#avisos').innerHTML = ''; }
+
+/* ---------- Resultado: código listo para enviar ---------- */
+function textoMail(p, car, its, kind) {
+  const L = [];
+  L.push(kind === 'b' ? 'BAJA DE MESAS DE EXAMEN · ISP N° 66 · Noviembre-Diciembre ' + YEAR : 'INSCRIPCIÓN A MESAS DE EXAMEN · ISP N° 66 · Noviembre-Diciembre ' + YEAR);
+  L.push('Estudiante: ' + p.apellidos.toUpperCase() + ', ' + p.nombres + ' · DNI ' + fDNI(p.dni) + (p.libreta ? ' · Libreta ' + p.libreta : ''));
+  if (p.tel || p.email) L.push('Contacto: ' + [p.tel, p.email].filter(Boolean).join(' · '));
+  L.push('Carrera: ' + CARRERAS[car].nombre + ' (Plan ' + CARRERAS[car].plan + ')');
+  L.push(kind === 'b' ? 'Mesas de las que me doy de baja:' : 'Materias:');
+  its.forEach(x => { const m = MB[x.m]; L.push('- ' + mesaNombre(m) + ' (' + m.anio + 'º año) · ' + ordl(x.l) + ' llamado · ' + fFecha(m.f[x.l - 1]) + (kind === 'b' ? '' : ' · ' + (x.c === 'L' ? 'Libre' : 'Regular') + (x.k ? ' · Com. ' + x.k : ''))); });
+  L.push('');
+  L.push('Código (copiá y pegá completo, sin cambiarlo):');
+  return L.join('\n');
+}
+function renderRes() {
+  const el = $('#mias'), r = S.res;
+  if (!r) { el.innerHTML = ''; return; }
+  const mail = cfg.emailInst, asunto = (r.kind === 'b' ? 'Baja de mesas' : 'Inscripción a mesas') + ' - DNI ' + r.dni;
+  const full = r.texto + '\n' + r.codigo;
+  const pasos = r.kind === 'b'
+    ? '<li>Copiá el texto de abajo y mandalo a <b class="mono">' + esc(mail) + '</b>.</li><li>La baja queda registrada cuando la institución cargue tu código. Guardá tu envío por si hace falta.</li>'
+    : '<li>Copiá el texto de abajo y mandalo a <b class="mono">' + esc(mail) + '</b> desde tu correo (o tocá «Abrir en mi correo»).</li><li>Pasá por secretaría a firmar tu ficha y abonar.' + (cfg.pagoInfo ? ' ' + esc(cfg.pagoInfo) : '') + '</li><li>Si necesitás anular una mesa, usá «Darme de baja» en esta misma página hasta ' + esc(cfg.bajaH) + ' h ' + (cfg.habiles ? 'hábiles ' : '') + 'antes del examen.</li>';
+  el.innerHTML = '<div class="sec"><div class="callout ok"><strong>' + (r.kind === 'b' ? 'Tu código de baja está listo' : 'Tu código de inscripción está listo') + '</strong>Todavía falta un paso: enviarlo a la institución. <b>Sin ese envío la ' + (r.kind === 'b' ? 'baja' : 'inscripción') + ' no queda registrada.</b></div>' +
+    '<div class="card"><ol class="pasos">' + pasos + '</ol>' +
+    '<div class="field"><label for="resTxt">Texto para enviar</label><textarea id="resTxt" readonly rows="' + Math.min(14, 7 + r.its.length) + '" class="mono" style="font-size:.82rem">' + esc(full) + '</textarea></div>' +
+    '<div class="acts" style="margin-top:10px"><button class="btn" data-cp type="button">Copiar texto</button><a class="btn sec" href="mailto:' + esc(mail) + '?subject=' + encodeURIComponent(asunto) + '&body=' + encodeURIComponent(full) + '">Abrir en mi correo</a><button class="btn sm sec" data-cerrar-exito type="button">Cerrar</button></div><p class="small muted" id="cpMsg" role="status"></p></div></div>';
+}
+
+/* ---------- Formulario: inscripción ---------- */
+function perfilVal(k) { return S.f[k] != null ? S.f[k] : ''; }
+function mesaRow(m, items, now) {
+  const est = estadoAl(m, items, now), selectable = est.l1 === null || est.l2 === null || est.reinsc;
+  let s = S.sel[m.id];
+  if (!s) s = S.sel[m.id] = { on: false, l: est.l1 === null ? 1 : 2, c: '', k: m.comisiones.length === 1 ? m.comisiones[0] : '', d: false };
+  if (s.l === 1 && est.l1 !== null) s.l = 2; if (s.l === 2 && est.l2 !== null && !est.reinsc) s.l = 1;
+  const corr = corrDe(m), on = s.on && selectable;
+  const badges = est.act.map(i => '<span class="chip ok">Código generado · ' + ordl(i.l) + ' llamado</span>').join(' ');
+  let det = '';
+  if (selectable) {
+    const l2dis = est.l2 !== null && !est.reinsc, l1dis = est.l1 !== null;
+    det = '<div class="det" ' + (on ? '' : 'hidden') + '>' +
+      '<fieldset><legend>Condición</legend><label class="opt"><input type="radio" name="c_' + m.id + '" value="R" data-f="c" data-m="' + m.id + '"' + (s.c === 'R' ? ' checked' : '') + '><span>Regular</span></label><label class="opt"><input type="radio" name="c_' + m.id + '" value="L" data-f="c" data-m="' + m.id + '"' + (s.c === 'L' ? ' checked' : '') + '><span>Libre</span></label></fieldset>' +
+      '<fieldset><legend>Llamado</legend>' +
+      '<label class="opt' + (l1dis ? ' off' : '') + '"><input type="radio" name="l_' + m.id + '" value="1" data-f="l" data-m="' + m.id + '"' + (s.l === 1 ? ' checked' : '') + (l1dis ? ' disabled' : '') + '><span>1º llamado · ' + esc(fFecha(m.f[0])) + '<small>' + (l1dis ? esc(est.l1) : '') + '</small></span></label>' +
+      '<label class="opt' + (l2dis ? ' off' : '') + '"><input type="radio" name="l_' + m.id + '" value="2" data-f="l" data-m="' + m.id + '"' + (s.l === 2 ? ' checked' : '') + (l2dis ? ' disabled' : '') + '><span>2º llamado · ' + esc(fFecha(m.f[1])) + '<small>' + (l2dis ? esc(est.l2) : (est.reinsc ? 'Si rendiste el 1º, podés volver a inscribirte hasta el ' + esc(fFecha(finReinsc(m))) : '')) + '</small></span></label></fieldset>' +
+      (m.comisiones.length > 1 ? '<fieldset><legend>Tu comisión</legend><select data-f="k" data-m="' + m.id + '" aria-label="Comisión"><option value="">Elegí…</option>' + m.comisiones.map(c => '<option value="' + c + '"' + (s.k === c ? ' selected' : '') + '>Comisión ' + c + '</option>').join('') + '</select></fieldset>' : '') +
+      (corr ? '<div class="corr"><b>Correlatividades para rendir ' + esc(m.materia) + '</b><ul>' + (corr.a || []).map(x => '<li>' + esc(x) + ' <span class="muted">(aprobada)</span></li>').join('') + (corr.r || []).map(x => '<li>' + esc(x) + ' <span class="muted">(regularizada)</span></li>').join('') + '</ul><label class="opt"><input type="checkbox" data-f="d" data-m="' + m.id + '"' + (s.d ? ' checked' : '') + '><span>Declaro tener cumplidas estas correlatividades. La institución las verifica antes del examen.</span></label></div>' : '') +
+      '<p class="err" data-warn="' + m.id + '" style="grid-column:1/-1"></p><p class="err" data-err="' + m.id + '" style="grid-column:1/-1"></p></div>';
+  }
+  return '<div class="mesa' + (selectable ? '' : ' bloq') + '" data-mesa="' + m.id + '"><div class="mesa-top"><label>' +
+    '<input type="checkbox" data-sel="' + m.id + '"' + (on ? ' checked' : '') + (selectable ? '' : ' disabled') + ' aria-label="Rendir ' + esc(m.materia) + '"><span><span class="mnom">' + esc(m.materia) + (m.com.length === 1 ? ' <span class="mcom">· Com. ' + m.com + '</span>' : '') + (m.taller ? ' <span class="chip mute">Taller</span>' : '') + '</span><br><span class="mtrib">Tribunal: ' + esc(m.trib) + '</span></span></label>' +
+    '<div class="mfechas">' + badges + '<span class="fch">1º ' + esc(fFecha(m.f[0])) + '</span><span class="fch">2º ' + esc(fFecha(m.f[1])) + '</span></div></div>' + det + '</div>';
+}
+function listaMesasHTML(items, now) {
+  const car = CARRERAS[S.car]; let h = '';
+  for (let a = 1; a <= car.anios; a++) {
+    const ms = MESAS.filter(m => m.car === S.car && m.anio === a).sort((x, y) => x.f[0] - y.f[0] || x.materia.localeCompare(y.materia, 'es') || x.com.localeCompare(y.com));
+    if (!ms.length) continue;
+    const col = (ANIO_COLOR[S.car] || {})[a] || 'var(--muted)';
+    h += '<div class="anio"><h3><i class="dot" style="background:' + col + '"></i>' + a + '.º año</h3>' + ms.map(m => mesaRow(m, items, now)).join('') + '</div>';
+  }
+  return h;
+}
+function fld(id, label, val, type, ac, hint) {
+  return '<div class="field" data-fld="' + id + '"><label for="p_' + id + '">' + label + '</label><input id="p_' + id + '" type="' + type + '" value="' + esc(val) + '" autocomplete="' + ac + '"' + (id === 'dni' ? ' inputmode="numeric"' : '') + '>' + (hint ? '<span class="hint">' + hint + '</span>' : '') + '<span class="err" data-err-f="' + id + '"></span></div>';
+}
+function datosHTML(conContacto) {
+  const f = perfilVal;
+  return '<div class="card"><h3>Tus datos</h3><div class="grid2">' +
+    fld('ap', 'Apellidos', f('apellidos'), 'text', 'family-name') + fld('no', 'Nombres', f('nombres'), 'text', 'given-name') +
+    fld('dni', 'Documento (DNI)', f('dni'), 'text', 'off', 'Solo números, sin puntos') +
+    (conContacto ? fld('tel', 'Teléfono', f('tel'), 'tel', 'tel') + fld('email', 'Correo electrónico', f('email'), 'email', 'email') + fld('lib', 'N° de libreta (opcional)', f('libreta'), 'text', 'off') : '') +
+    '</div></div>';
+}
+function carHTML() {
+  return '<div class="card"><h3>Tu carrera</h3><div class="carsel">' + CAR_ORDER.map(c => '<button type="button" class="carbtn" data-car="' + c + '" aria-pressed="' + (S.car === c) + '"><b>' + esc(CARRERAS[c].nombre) + '</b><span>Plan ' + CARRERAS[c].plan + '</span></button>').join('') + '</div></div>';
+}
+function modoHTML() {
+  return '<nav class="tabs" aria-label="Qué querés hacer"><button class="tab" type="button" data-mode="insc" aria-selected="' + (S.mode === 'insc') + '">Inscribirme</button><button class="tab" type="button" data-mode="baja" aria-selected="' + (S.mode === 'baja') + '">Darme de baja</button></nav>';
+}
+function renderForm() {
+  const el = $('#formSec'), now = Date.now();
+  if (S.mode === 'baja') return renderBaja(el, now);
+  const items = misItems();
+  const hayReinsc = hLoad().some(e => e.e === 'a' && e.l === 1 && MB[e.m] && now >= MB[e.m].f[0] && now <= finReinsc(MB[e.m]));
+  if (!inscAbierta(now) && !hayReinsc) {
+    const d = Date.parse(cfg.desde);
+    el.innerHTML = modoHTML() + '<div class="callout warn" style="margin-top:14px"><strong>' + (now < d ? 'La inscripción todavía no abrió.' : 'La inscripción está cerrada.') + '</strong>' + (now < d ? 'Abre el ' + esc(fFH(d)) + '.' : 'Si necesitás anular una mesa, usá «Darme de baja» hasta ' + esc(cfg.bajaH) + ' h antes de cada examen.') + '</div>';
+    return;
+  }
+  if (!S.car && items.length) { const first = items.find(i => MB[i.m]); if (first) S.car = MB[first.m].car; }
+  el.innerHTML = modoHTML() + '<div class="sec" style="margin-top:14px"><header><h2>Inscribirme a mesas</h2></header>' +
+    '<p class="muted small">Completá el formulario y vas a recibir un <b>código</b>. Lo enviás al correo de la institución y pasás por secretaría a firmar y abonar. No necesitás crear ninguna cuenta.</p>' +
+    datosHTML(true) + carHTML() +
+    '<div id="listaMesas">' + (S.car ? '<p class="muted small">Marcá las materias en las que querés rendir. Si no figura una materia, esa mesa no se toma en este turno.</p>' + listaMesasHTML(items, now) : '<div class="callout">Elegí tu carrera para ver las mesas del turno.</div>') + '</div>' +
+    '<div class="sticky-bar"><span id="resumenSel" class="small"></span><button class="btn lg" id="btnEnviar" type="button">Generar mi código</button></div><p class="err" id="errGral" role="alert"></p></div>';
+  resumenSel();
+}
+/* ---------- Formulario: baja ---------- */
+function renderBaja(el, now) {
+  const items = misItems().filter(i => i.e === 'a');
+  const conHist = items.length > 0, todas = S.bjAll || !conHist;
+  let lista = '';
+  if (S.car) {
+    const ms = MESAS.filter(m => m.car === S.car).sort((x, y) => x.f[0] - y.f[0] || x.materia.localeCompare(y.materia, 'es'));
+    ms.forEach(m => [1, 2].forEach(l => {
+      const mine = items.some(i => i.m === m.id && i.l === l);
+      if (!todas && !mine) return;
+      const lim = limBaja(m, l), vencida = now >= lim, key = m.id + '|' + l;
+      lista += '<label class="opt' + (vencida ? ' off' : '') + '" style="padding:8px 0;border-bottom:1px solid var(--line)"><input type="checkbox" data-bj="' + key + '"' + (S.bj.has(key) && !vencida ? ' checked' : '') + (vencida ? ' disabled' : '') + '><span><b>' + esc(mesaNombre(m)) + '</b> · ' + ordl(l) + ' llamado · ' + esc(fFecha(m.f[l - 1])) + (mine ? ' <span class="chip ok">Inscripción de este dispositivo</span>' : '') + '<small>' + (vencida ? 'Venció el plazo de baja (' + esc(fFH(lim)) + ').' : 'Podés darte de baja hasta el ' + esc(fFH(lim)) + '.') + '</small></span></label>';
+    }));
+    if (!lista) lista = '<p class="muted small">No hay inscripciones para mostrar.</p>';
+  }
+  el.innerHTML = modoHTML() + '<div class="sec" style="margin-top:14px"><header><h2>Darme de baja de una mesa</h2></header>' +
+    '<p class="muted small">Elegí las mesas de las que querés darte de baja. Vas a recibir un código que tenés que enviar al correo de la institución.</p>' +
+    datosHTML(false) + carHTML() +
+    (S.car ? '<div class="card"><h3>Mesas</h3>' + (conHist ? '<label class="opt"><input type="checkbox" id="bjAll"' + (S.bjAll ? ' checked' : '') + '><span>Mostrar todas las mesas de mi carrera</span></label>' : '') + lista + '</div>' : '<div class="callout">Elegí tu carrera para ver las mesas.</div>') +
+    '<div class="sticky-bar"><span id="resumenSel" class="small">' + S.bj.size + (S.bj.size === 1 ? ' mesa elegida' : ' mesas elegidas') + '</span><button class="btn lg danger" id="btnBaja" type="button">Generar código de baja</button></div><p class="err" id="errGral" role="alert"></p></div>';
+}
+/* Avisa en el momento si dos mesas elegidas caen el mismo día */
+function avisosDia() {
+  $$('[data-warn]').forEach(e => { e.textContent = ''; });
+  const sel = Object.keys(S.sel).filter(k => S.sel[k].on && MB[k] && MB[k].car === S.car && S.sel[k].l).map(k => ({ m: MB[k], l: S.sel[k].l }));
+  let n = 0;
+  sel.forEach(a => {
+    const b = sel.find(x => x !== a && !(exenta(a.m) && exenta(x.m)) && diaDe(x.m.f[x.l - 1]) === diaDe(a.m.f[a.l - 1]));
+    if (b) { n++; const el = $('[data-warn="' + a.m.id + '"]'); if (el) el.textContent = 'Coincide el día con «' + b.m.materia + '». Solo se puede rendir una mesa por día: cambiá el llamado de una o desmarcala.'; }
+  });
+  return n;
+}
+function resumenSel() {
+  const n = Object.keys(S.sel).filter(k => S.sel[k].on && MB[k] && MB[k].car === S.car).length, el = $('#resumenSel');
+  if (el) el.textContent = n ? n + (n === 1 ? ' materia elegida' : ' materias elegidas') : 'Todavía no elegiste ninguna materia';
+}
+
+/* ---------- Acciones del estudiante ---------- */
+const MAPF = { ap: 'apellidos', no: 'nombres', dni: 'dni', tel: 'tel', email: 'email', lib: 'libreta' };
+const fe = (id, msg) => { const f = $('[data-fld="' + id + '"]'); if (f) { f.classList.add('invalid'); $('[data-err-f="' + id + '"]', f).textContent = msg; } };
+function leerDatos(conContacto) {
+  $$('.field.invalid').forEach(x => x.classList.remove('invalid'));
+  $$('[data-err-f],[data-err]').forEach(x => { x.textContent = ''; }); $('#errGral').textContent = '';
+  const g = id => { const e = $('#p_' + id); return e ? (e.value || '').trim() : ''; };
+  const v = { apellidos: g('ap'), nombres: g('no'), dni: g('dni').replace(/[.\s]/g, ''), tel: g('tel'), email: g('email'), libreta: g('lib') };
+  let bad = 0, first = null;
+  const mark = (id, msg) => { fe(id, msg); bad++; first = first || $('[data-fld="' + id + '"]'); };
+  if (!v.apellidos) mark('ap', 'Completá tus apellidos.');
+  if (!v.nombres) mark('no', 'Completá tus nombres.');
+  if (!/^\d{7,8}$/.test(v.dni)) mark('dni', 'Ingresá tu DNI con 7 u 8 números.');
+  if (conContacto) {
+    if ((v.tel.match(/\d/g) || []).length < 6) mark('tel', 'Ingresá un teléfono de contacto.');
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v.email)) mark('email', 'Ingresá un correo válido.');
+  }
+  return { v, bad, first };
+}
+function mostrarRes(kind, p, car, its) {
+  its = its.slice().sort((x, y) => MB[x.m].f[x.l - 1] - MB[y.m].f[y.l - 1]);
+  const now = Date.now(), codigo = armarCodigo(p, car, its, now), texto = textoMail(p, car, its, kind);
+  S.res = { kind, dni: p.dni, codigo, texto, its };
+  renderRes(); renderForm(); $('#mias').scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+function generar() {
+  const d = leerDatos(true); let bad = d.bad, first = d.first; const v = d.v;
+  const ids = Object.keys(S.sel).filter(k => S.sel[k].on && MB[k] && MB[k].car === S.car);
+  if (!S.car) { $('#errGral').textContent = 'Elegí tu carrera.'; bad++; }
+  else if (!ids.length) { $('#errGral').textContent = 'Marcá al menos una materia.'; bad++; }
+  ids.forEach(id => {
+    const m = MB[id], s = S.sel[id], er = $('[data-err="' + id + '"]'); const msgs = [];
+    if (!s.c) msgs.push('Elegí si rendís como regular o libre.');
+    if (!s.l) msgs.push('Elegí el llamado.');
+    if (m.comisiones.length > 1 && !s.k) msgs.push('Elegí tu comisión.');
+    if (corrDe(m) && !s.d) msgs.push('Tenés que declarar que cumplís las correlatividades.');
+    if (msgs.length) { if (er) er.textContent = msgs.join(' '); bad++; first = first || $('[data-mesa="' + id + '"]'); }
+  });
+  if (S.car && avisosDia()) { bad++; first = first || $('[data-warn]:not(:empty)'); }
+  if (bad) { if (first) first.scrollIntoView({ block: 'center', behavior: 'smooth' }); else $('#errGral').scrollIntoView({ block: 'center' }); return; }
+  const items = itemsDe(v.dni, hLoad()), now = Date.now(), its = [];
+  for (const id of ids) {
+    const m = MB[id], s = S.sel[id], est = estadoAl(m, items, now), motivo = est['l' + s.l];
+    if (motivo !== null && !(s.l === 2 && est.reinsc)) { $('[data-err="' + id + '"]').textContent = motivo; $('#errGral').textContent = 'Revisá los avisos en rojo: alguna mesa ya no admite esa inscripción.'; return; }
+    const it = { m: id, l: s.l, c: s.c, k: s.k || '', d: corrDe(m) ? 1 : 0, e: 'a', t: now };
+    items.push(it); its.push(it);
+  }
+  hAdd(its.map(i => ({ dni: v.dni, m: i.m, l: i.l, e: 'a', t: now })));
+  S.sel = {};
+  mostrarRes('a', v, S.car, its);
+}
+function generarBaja() {
+  const d = leerDatos(false), v = d.v;
+  const keys = [...S.bj].filter(k => MB[k.split('|')[0]] && MB[k.split('|')[0]].car === S.car);
+  if (!S.car) { $('#errGral').textContent = 'Elegí tu carrera.'; d.bad++; }
+  else if (!keys.length) { $('#errGral').textContent = 'Marcá al menos una mesa.'; d.bad++; }
+  if (d.bad) { if (d.first) d.first.scrollIntoView({ block: 'center', behavior: 'smooth' }); return; }
+  const now = Date.now(), its = [];
+  for (const k of keys) { const p = k.split('|'), m = MB[p[0]], l = +p[1]; if (now >= limBaja(m, l)) { $('#errGral').textContent = 'Para «' + m.materia + '» ya venció el plazo de baja.'; return; } its.push({ m: m.id, l, c: '', k: '', d: 0, e: 'b' }); }
+  hAdd(its.map(i => ({ dni: v.dni, m: i.m, l: i.l, e: 'b', t: now })));
+  S.bj = new Set();
+  mostrarRes('b', v, S.car, its);
+}
+async function copiar() {
+  const ta = $('#resTxt'), msg = $('#cpMsg'); if (!ta) return;
+  let ok = false;
+  try { if (navigator.clipboard && navigator.clipboard.writeText) { await navigator.clipboard.writeText(ta.value); ok = true; } } catch (e) { ok = false; }
+  if (!ok) { try { ta.focus(); ta.select(); ok = document.execCommand('copy'); } catch (e) { ok = false; } }
+  if (msg) msg.textContent = ok ? 'Texto copiado. Pegalo en tu correo o en un mensaje.' : 'No se pudo copiar solo: tocá el texto, seleccionalo todo y copialo.';
+  if (!ok) { ta.focus(); ta.select(); }
+}
+
+/* ---------- Eventos del estudiante ---------- */
+document.addEventListener('input', e => {
+  const t = e.target;
+  if (t.id && t.id.indexOf('p_') === 0 && MAPF[t.id.slice(2)]) S.f[MAPF[t.id.slice(2)]] = t.value;
+});
+$('#formSec').addEventListener('change', e => {
+  const t = e.target;
+  if (t.id === 'p_dni') {
+    const antes = S.dniPrev || '', ahora = dniForm(); S.dniPrev = ahora;
+    const h = hLoad(); if (h.some(x => x.dni === ahora || x.dni === antes)) renderForm();
+    return;
+  }
+  if (t.id === 'bjAll') { S.bjAll = t.checked; renderForm(); return; }
+  if (t.dataset.bj) { if (t.checked) S.bj.add(t.dataset.bj); else S.bj.delete(t.dataset.bj); const r = $('#resumenSel'); if (r) r.textContent = S.bj.size + (S.bj.size === 1 ? ' mesa elegida' : ' mesas elegidas'); return; }
+  if (t.dataset.sel) {
+    const s = S.sel[t.dataset.sel]; s.on = t.checked; const det = $('[data-mesa="' + t.dataset.sel + '"] .det'); if (det) det.hidden = !t.checked; resumenSel(); avisosDia(); return;
+  }
+  if (t.dataset.f && t.dataset.m) {
+    const s = S.sel[t.dataset.m], f = t.dataset.f;
+    if (f === 'd') s.d = t.checked; else if (f === 'l') { s.l = +t.value; avisosDia(); } else s[f] = t.value;
+  }
+});
+$('#formSec').addEventListener('click', e => {
+  const md = e.target.closest('[data-mode]');
+  if (md) { S.mode = md.dataset.mode; renderForm(); return; }
+  const c = e.target.closest('[data-car]');
+  if (c) { S.car = c.dataset.car; S.sel = {}; S.bj = new Set(); renderForm(); return; }
+  if (e.target.closest('#btnEnviar')) generar();
+  if (e.target.closest('#btnBaja')) generarBaja();
+});
+$('#mias').addEventListener('click', e => {
+  if (e.target.closest('[data-cerrar-exito]')) { S.res = null; renderRes(); return; }
+  if (e.target.closest('[data-cp]')) copiar();
+});
+document.addEventListener('focusin', e => { if (e.target.id === 'resTxt') e.target.select(); });
+function fit(doc, txt, maxW, size, min) { doc.setFontSize(size); while (doc.getTextWidth(txt) > maxW && size > (min || 6)) { size -= .5; doc.setFontSize(size); } return size; }
+function dibujarFicha(doc, carId, p, its) {
+  const car = CARRERAS[carId];
+  const per = 13, pages = Math.max(1, Math.ceil(its.length / per)), X = 13.5, W = 183, now = Date.now();
+  for (let pg = 0; pg < pages; pg++) {
+    if (doc.__used) doc.addPage(); doc.__used = true;
+    doc.setDrawColor(0); doc.setTextColor(0); doc.setLineWidth(.4);
+    doc.rect(X, 12, 36, 17); doc.setFont('helvetica', 'bold'); doc.setFontSize(7.5);
+    doc.text(['Instituto', 'Superior de', 'Profesorado'], X + 3, 17); doc.setFontSize(11); doc.text('N° 66', X + 3, 27);
+    doc.setFont('helvetica', 'normal'); doc.setFontSize(17); doc.text('INSCRIPCIÓN A EXÁMENES', X + W, 19, { align: 'right' });
+    doc.setFont('helvetica', 'bold'); doc.setFontSize(10); doc.text('Período: Noviembre - Diciembre / ' + YEAR, X + W, 26, { align: 'right' });
+    doc.setFontSize(8); doc.text('Talón a completar por el Alumno.', X + W, 31, { align: 'right' });
+    doc.rect(X, 36, W, 8); fit(doc, car.esp + ' · PLAN ' + car.plan, W - 4, 11); doc.text(car.esp + ' · PLAN ' + car.plan, X + W / 2, 41.6, { align: 'center' });
+    const cell = (x, y, w, h, label, val, lw) => { doc.rect(x, y, w, h); doc.setFont('helvetica', 'bold'); doc.setFontSize(8.5); doc.text(label, x + 2, y + 5.3); if (val != null) { doc.setFont('helvetica', 'normal'); fit(doc, String(val), w - lw - 3, 10); doc.text(String(val), x + lw, y + 5.5); } };
+    cell(X, 44, W, 8, 'APELLIDOS', p.apellidos, 38); cell(X, 52, W, 8, 'NOMBRES', p.nombres, 38);
+    cell(X, 60, 108, 8, 'DOCUMENTO N°', fDNI(p.dni), 38); cell(X + 108, 60, W - 108, 8, 'Tel:', p.tel, 11);
+    cell(X, 68, 108, 8, 'E-MAIL:', p.email, 38); cell(X + 108, 68, W - 108, 8, 'N° de Libreta:', p.libreta || '', 30);
+    const cw = [68, 11, 16, 22, 8, 25, 8, 25], y0 = 80, hh = 12; let x = X;
+    const hdr = ['MATERIAS', 'AÑO', 'COMISIÓN', 'CONDICIÓN'];
+    doc.setFontSize(8); doc.setFont('helvetica', 'bold');
+    cw.forEach((w, i) => { doc.rect(x, y0, w, hh); x += w; });
+    x = X; hdr.forEach((t, i) => { doc.text(t, x + cw[i] / 2, y0 + 7, { align: 'center' }); x += cw[i]; });
+    x = X + cw[0] + cw[1] + cw[2] + cw[3]; doc.line(x, y0 + 5, x + 66, y0 + 5);
+    doc.setFontSize(7); doc.text('LLAMADO (marcar con una x)', x + 33, y0 + 3.6, { align: 'center' });
+    doc.setFontSize(8); ['1º', 'FECHA', '2º', 'FECHA'].forEach((t, i) => { const w = cw[4 + i]; doc.text(t, x + w / 2, y0 + 10, { align: 'center' }); x += w; });
+    const rh = 11; const rows = its.slice(pg * per, pg * per + per);
+    for (let r = 0; r < per; r++) {
+      const y = y0 + hh + r * rh; x = X; cw.forEach(w => { doc.rect(x, y, w, rh); x += w; });
+      doc.setFont('helvetica', 'bold'); doc.setFontSize(8); doc.text((pg * per + r + 1) + '.', X + 1.5, y + 4);
+      const it = rows[r]; if (!it) continue; const m = MB[it.m];
+      doc.setFont('helvetica', 'normal'); doc.setFontSize(8.5);
+      const nm = doc.splitTextToSize(mesaNombre(m), cw[0] - 9).slice(0, 3); doc.text(nm, X + 7, y + (nm.length > 1 ? 3.6 : 6.4));
+      x = X + cw[0]; doc.text(m.anio + 'º', x + cw[1] / 2, y + 6.4, { align: 'center' });
+      x += cw[1]; doc.text(it.k || '', x + cw[2] / 2, y + 6.4, { align: 'center' });
+      x += cw[2]; doc.text(it.c === 'L' ? 'LIBRE' : 'REGULAR', x + cw[3] / 2, y + 6.4, { align: 'center' });
+      x += cw[3]; const fch = dmy(m.f[it.l - 1]);
+      if (it.l === 1) { doc.setFont('helvetica', 'bold'); doc.text('X', x + cw[4] / 2, y + 6.4, { align: 'center' }); doc.setFont('helvetica', 'normal'); doc.text(fch, x + cw[4] + cw[5] / 2, y + 6.4, { align: 'center' }); }
+      else { doc.setFont('helvetica', 'bold'); doc.text('X', x + cw[4] + cw[5] + cw[6] / 2, y + 6.4, { align: 'center' }); doc.setFont('helvetica', 'normal'); doc.text(fch, x + cw[4] + cw[5] + cw[6] + cw[7] / 2, y + 6.4, { align: 'center' }); }
+    }
+    doc.setLineWidth(.3); doc.line(X, 262, X + 60, 262); doc.line(X + W - 62, 262, X + W, 262);
+    doc.setFont('helvetica', 'bold'); doc.setFontSize(8.5); doc.text('SELLO INSTITUCIONAL', X, 266); doc.text('FIRMA DE EL/LA ALUMNO/A', X + W, 266, { align: 'right' });
+    doc.setFont('helvetica', 'normal'); doc.setFontSize(7.5);
+    doc.text('Inscripción generada desde la página de mesas de examen · impresa el ' + dmy(now) + ' a las ' + hm(now) + ' h · Hoja ' + (pg + 1) + ' de ' + pages, X, 277);
+    doc.text('Baja de una mesa: hasta ' + cfg.bajaH + ' h ' + (cfg.habiles ? 'hábiles ' : '') + 'antes del examen, desde la misma página (código de baja).', X, 281);
+  }
+}
+async function generarFichas(list, nombre) {
+  if (!list.length) { toast('No hay fichas para imprimir con estos filtros.'); return; }
+  try { await loadLib(JSPDF); } catch (e) { toast(e.message); return; }
+  const doc = new window.jspdf.jsPDF({ unit: 'mm', format: 'a4' });
+  list.forEach(x => dibujarFicha(doc, x.car, x.p, x.its));
+  await descargar(nombre + '.pdf', doc.output('arraybuffer'));
+}
+/* ---------- Panel de administración ---------- */
+/* Motivos en tercera persona para la institución */
+const motAdm = s => String(s).replace('Ya estás inscripto al', 'Ya figura inscripto al').replace('Ya estás inscripto a «', 'Ya figura inscripto a «').replace('Estás inscripto al 2º llamado y no se puede pasar al 1º.', 'Estaba inscripto al 2º llamado y no puede pasar al 1º.').replace('Te inscribiste al 2º llamado y no se puede pasar al 1º.', 'Se inscribió al 2º llamado y no puede pasar al 1º.').replace('Para pasarte al 2º, primero dá de baja el 1º.', 'Para pasar al 2º tendría que darse de baja del 1º.').replace('Venció el plazo para inscribirte al 2º llamado.', 'Venció el plazo para inscribirse al 2º llamado.');
+/* Reconstruye las inscripciones repasando los códigos cargados en orden cronológico, con las reglas vigentes al momento de cada uno */
+function replay() {
+  const by = {}, rows = [], obs = [];
+  S.cod.forEach(e => { if (MB[e.m]) (by[e.dni] = by[e.dni] || []).push(e); });
+  Object.keys(by).forEach(dni => {
+    const evs = by[dni].slice().sort((a, b) => a.t - b.t || (a.e === 'b') - (b.e === 'b')), items = [], mios = [];
+    const prof = { ap: '', no: '', tel: '', em: '', li: '' };
+    evs.forEach(e => { ['ap', 'no', 'tel', 'em', 'li'].forEach(k => { if (e[k]) prof[k] = e[k]; }); });
+    evs.forEach(e => {
+      const m = MB[e.m], base = { src: 'cod', key: dni, dni, ap: prof.ap, no: prof.no, tel: prof.tel, email: prof.em, lib: prof.li, m: e.m, l: e.l, c: e.c, k: e.k || '', dcl: !!e.d, t: e.t };
+      const quien = (prof.ap + ', ' + prof.no).trim();
+      if (e.e === 'a') {
+        const est = estadoAl(m, items, e.t), mot = est['l' + e.l];
+        if (mot !== null && !(e.l === 2 && est.reinsc)) { const r = Object.assign({}, base, { dup: true, rej: motAdm(mot) }); rows.push(r); obs.push({ quien, dni, mesa: mesaNombre(m), l: e.l, tipo: 'Inscripción', mot: motAdm(mot), t: e.t }); return; }
+        items.push({ m: e.m, l: e.l, e: 'a' }); const r = Object.assign({}, base); rows.push(r); mios.push(r);
+      } else {
+        const it = items.find(x => x.m === e.m && x.l === e.l && x.e === 'a');
+        if (!it) { obs.push({ quien, dni, mesa: mesaNombre(m), l: e.l, tipo: 'Baja', mot: 'No hay una inscripción cargada para esta baja (puede faltar cargar el código de inscripción).', t: e.t }); return; }
+        if (e.t >= limBaja(m, e.l)) { obs.push({ quien, dni, mesa: mesaNombre(m), l: e.l, tipo: 'Baja', mot: 'Baja fuera de plazo (cerraba el ' + fFH(limBaja(m, e.l)) + '). La inscripción se mantiene.', t: e.t }); return; }
+        it.e = 'b'; const r = mios.find(x => x.m === e.m && x.l === e.l && !x.out); if (r) r.out = true;
+      }
+    });
+  });
+  S.obs = obs.sort((a, b) => b.t - a.t);
+  return rows.filter(r => !r.out);
+}
+function computeRows() {
+  const rows = replay();
+  S.man.forEach(x => { if (MB[x.m]) rows.push({ key: 'man-' + x.id, src: 'man', docId: x.id, ap: x.apellidos || '', no: x.nombres || '', dni: x.dni || '', lib: x.libreta || '', tel: '', email: '', m: x.m, l: x.l, c: x.c, k: x.k || '', dcl: false, t: x.t || 0 }); });
+  rows.forEach(r => {
+    r.rk = r.key + '_' + r.m + '_' + r.l; const rv = S.revs[r.rk] || {}, pg = S.revs['pago_' + r.key] || {};
+    r.st = rv.st || (r.src === 'man' ? 'ok' : 'p'); r.pago = !!pg.pago;
+  });
+  rows.sort((a, b) => a.t - b.t); const seen = {};
+  rows.forEach(r => { if (r.rej) return; const k = r.dni + '|' + r.m + '|' + r.l; if (seen[k]) r.dup = true; else seen[k] = 1; });
+  return rows;
+}
+let ROWS = [], BYML = {};
+function indexRows() { ROWS = computeRows(); BYML = {}; ROWS.forEach(r => { (BYML[r.m + '|' + r.l] = BYML[r.m + '|' + r.l] || []).push(r); }); Object.keys(BYML).forEach(k => BYML[k].sort(cmpNombre)); }
+const cuenta = (m, l) => (BYML[m.id + '|' + l] || []).filter(r => !r.dup && r.st !== 'no').length;
+function listaML() {
+  const out = [], q = S.q.trim().toLowerCase();
+  MESAS.forEach(m => [1, 2].forEach(l => {
+    if (S.fCar && m.car !== S.fCar) return; if (S.fLl && +S.fLl !== l) return; if (S.fFecha && dm(m.f[l - 1]) !== S.fFecha) return;
+    const n = cuenta(m, l); if (S.soloCon && !n) return;
+    if (q) {
+      const rs = BYML[m.id + '|' + l] || [];
+      if (!(m.materia.toLowerCase().indexOf(q) >= 0 || rs.some(r => (r.ap + ' ' + r.no + ' ' + r.dni).toLowerCase().indexOf(q) >= 0))) return;
+    }
+    out.push({ m, l, f: m.f[l - 1], n });
+  }));
+  return out.sort((a, b) => a.f - b.f || CAR_ORDER.indexOf(a.m.car) - CAR_ORDER.indexOf(b.m.car) || a.m.anio - b.m.anio || a.m.materia.localeCompare(b.m.materia, 'es'));
+}
+function rosterHTML(m, l) {
+  const rs = BYML[m.id + '|' + l] || [], f = m.f[l - 1], corr = corrDe(m);
+  let h = '<div class="hdr-det"><div><b>' + esc(mesaNombre(m)) + ' · ' + ordl(l) + ' llamado</b><div class="tiempos"><span>Examen: ' + esc(fFH(f)) + '</span><span>Bajas hasta: ' + esc(fFH(limBaja(m, l))) + '</span><span>Listado definitivo: ' + esc(fFH(limListado(m, l))) + '</span><span>Tribunal: ' + esc(m.trib) + '</span></div></div>' +
+    '<div class="acts"><button class="btn sm" data-a="acta" data-k="' + m.id + '|' + l + '">Acta PDF</button><button class="btn sm sec" data-a="xlsx" data-k="' + m.id + '|' + l + '">Excel</button><button class="btn sm sec" data-a="add" data-k="' + m.id + '|' + l + '">Agregar a mano</button></div></div>';
+  if (S.add && S.add.k === m.id + '|' + l) {
+    const a = S.add;
+    h += '<div class="card" style="margin-bottom:10px"><h3>Agregar estudiante a esta mesa</h3><div class="grid2">' +
+      '<div class="field"><label for="ad_ap">Apellidos</label><input id="ad_ap" type="text" value="' + esc(a.ap) + '"></div><div class="field"><label for="ad_no">Nombres</label><input id="ad_no" type="text" value="' + esc(a.no) + '"></div>' +
+      '<div class="field"><label for="ad_dni">DNI</label><input id="ad_dni" type="text" inputmode="numeric" value="' + esc(a.dni) + '"></div><div class="field"><label for="ad_lib">N° de libreta (opcional)</label><input id="ad_lib" type="text" value="' + esc(a.lib) + '"></div>' +
+      '<div class="field"><label for="ad_c">Condición</label><select id="ad_c"><option value="R"' + (a.c === 'R' ? ' selected' : '') + '>Regular</option><option value="L"' + (a.c === 'L' ? ' selected' : '') + '>Libre</option></select></div>' +
+      (m.comisiones.length > 1 ? '<div class="field"><label for="ad_k">Comisión</label><select id="ad_k"><option value="">—</option>' + m.comisiones.map(c => '<option' + (a.k === c ? ' selected' : '') + '>' + c + '</option>').join('') + '</select></div>' : '') +
+      '</div><p class="err" id="adErr"></p><div class="acts"><button class="btn sm" data-a="addsave">Agregar</button><button class="btn sm sec" data-a="addcancel">Cancelar</button></div></div>';
+  }
+  if (!rs.length) return h + '<p class="muted">Todavía no hay inscriptos en este llamado.</p>';
+  h += '<div class="tblwrap"><table class="roster"><thead><tr><th>#</th><th>Apellido y nombre</th><th>DNI</th><th>Libreta</th><th>Condición</th><th>Com.</th><th>Correlativas</th><th>Firmó y abonó</th><th>Verificación</th><th></th></tr></thead><tbody>';
+  let n = 0;
+  rs.forEach(r => {
+    const excl = r.dup || r.st === 'no'; if (!excl) n++;
+    const chip = r.rej ? '<span class="chip bad" title="' + esc(r.rej) + '">Rechazada</span><div class="small">' + esc(r.rej) + '</div>' : r.dup ? '<span class="chip warn">Repetida</span>' : r.st === 'ok' ? '<span class="chip ok">Verificada</span>' : r.st === 'no' ? '<span class="chip bad">No cumple</span>' : '<span class="chip warn">Pendiente</span>';
+    h += '<tr class="' + (excl ? 'no' : '') + '"><td class="num">' + (excl ? '–' : n) + '</td><td><b>' + esc(r.ap.toUpperCase()) + '</b>, ' + esc(r.no) + (r.src === 'man' ? ' <span class="chip info">A mano</span>' : '') + '<div class="small muted">' + esc(r.tel) + (r.email ? ' · ' + esc(r.email) : '') + '</div></td><td class="mono">' + esc(fDNI(r.dni)) + '</td><td class="mono">' + esc(r.lib) + '</td><td>' + (r.c === 'L' ? 'Libre' : 'Regular') + '</td><td>' + esc(r.k) + '</td><td>' + (corr ? (r.dcl ? '<span class="chip ok">Declaradas</span>' : '<span class="chip mute">Sin declarar</span>') : '<span class="muted">No tiene</span>') + '</td>' +
+      '<td><label class="opt"><input type="checkbox" data-a="pago" data-key="' + esc(r.key) + '"' + (r.pago ? ' checked' : '') + ' aria-label="Firmó y abonó"><span class="small">Sí</span></label></td><td>' + chip + '</td>' +
+      '<td><div class="acts">' + (r.src === 'cod' && !r.dup ? '<button class="btn sm sec" data-a="ficha" data-key="' + esc(r.key) + '" data-car="' + m.car + '">Ficha</button>' : '') + (r.dup ? '' : (r.st === 'ok' ? '' : '<button class="btn sm sec" data-a="ver" data-rk="' + esc(r.rk) + '">Verificar</button>') + (r.st === 'no' ? '' : '<button class="btn sm danger" data-a="no" data-rk="' + esc(r.rk) + '">No cumple</button>') + (r.st !== 'p' && r.src !== 'man' ? '<button class="btn sm sec" data-a="pend" data-rk="' + esc(r.rk) + '">Deshacer</button>' : '')) + (r.src === 'man' ? '<button class="btn sm danger' + (S.cbAdm === r.docId ? ' confirm' : '') + '" data-a="del" data-id="' + esc(r.docId) + '">' + (S.cbAdm === r.docId ? 'Confirmar' : 'Quitar') + '</button>' : '') + '</div></td></tr>';
+  });
+  return h + '</tbody></table></div><p class="small muted" style="margin-top:8px">El pago es por turno completo: el tilde "Firmó y abonó" vale para todas las mesas del estudiante. Quienes figuran como "No cumple" quedan fuera del acta.</p>';
+}
+function renderAdminList() {
+  indexRows();
+  const act = ROWS.filter(r => !r.dup && r.st !== 'no'), estu = new Set(act.map(r => r.key)), pagados = new Set(act.filter(r => r.pago).map(r => r.key));
+  const mesasCon = new Set(act.map(r => r.m + '|' + r.l)).size, dups = ROWS.filter(r => r.dup).length;
+  $('#admStats').innerHTML = [['Inscripciones', act.length], ['Estudiantes', estu.size], ['Mesas con inscriptos', mesasCon], ['Pendientes de verificar', act.filter(r => r.st === 'p').length], ['Firmaron y abonaron', pagados.size]].concat(dups ? [['Repetidas o rechazadas', dups]] : []).concat(S.obs.length ? [['Observaciones', S.obs.length]] : []).map(x => '<div class="stat"><b>' + x[1] + '</b><span>' + x[0] + '</span></div>').join('');
+  renderObs();
+  const lista = listaML(), now = Date.now();
+  if (!lista.length) { $('#admList').innerHTML = '<div class="callout">No hay mesas con esos filtros.</div>'; return; }
+  let h = '<div class="tblwrap"><table><thead><tr><th>Fecha</th><th>Carrera</th><th>Año</th><th>Materia</th><th>Llamado</th><th class="num">Inscriptos</th><th>Estado</th></tr></thead><tbody>';
+  lista.forEach(x => {
+    const k = x.m.id + '|' + x.l, st = estadoML(x.m, x.l, now), op = S.open.has(k), col = (ANIO_COLOR[x.m.car] || {})[x.m.anio] || 'var(--muted)';
+    h += '<tr class="fila' + (x.n ? '' : ' vacia') + '" data-k="' + k + '" tabindex="0" aria-expanded="' + op + '"><td class="mono" style="white-space:nowrap">' + esc(fFecha(x.f)) + ' ' + hm(x.f) + '</td><td>' + esc(CARRERAS[x.m.car].corto) + '</td><td style="white-space:nowrap"><i class="dot" style="background:' + col + ';display:inline-block;margin-right:6px"></i>' + x.m.anio + 'º' + (x.m.com ? ' ' + x.m.com.split('').join(' y ') : '') + '</td><td>' + esc(x.m.materia) + (x.m.taller ? ' <span class="chip mute">Taller</span>' : '') + '</td><td>' + ordl(x.l) + '</td><td class="num"><b>' + x.n + '</b></td><td><span class="chip ' + st.c + '">' + st.t + '</span></td></tr>';
+    if (op) h += '<tr class="det-row"><td colspan="7">' + rosterHTML(x.m, x.l) + '</td></tr>';
+  });
+  $('#admList').innerHTML = h + '</tbody></table></div>';
+}
+function renderObs() {
+  const el = $('#admObs'); if (!el) return;
+  if (!S.obs.length) { el.innerHTML = ''; return; }
+  el.innerHTML = '<details class="card"' + (S.obsOpen ? ' open' : '') + ' id="obsDet"><summary>Observaciones sobre códigos cargados (' + S.obs.length + ')</summary><div class="tblwrap" style="margin-top:10px"><table><thead><tr><th>Estudiante</th><th>DNI</th><th>Qué</th><th>Mesa</th><th>Motivo</th><th>Generado</th></tr></thead><tbody>' +
+    S.obs.map(o => '<tr><td>' + esc(o.quien) + '</td><td class="mono">' + esc(fDNI(o.dni)) + '</td><td>' + o.tipo + '</td><td>' + esc(o.mesa) + ' · ' + ordl(o.l) + '</td><td>' + esc(o.mot) + '</td><td class="mono" style="white-space:nowrap">' + esc(fFH(o.t)) + '</td></tr>').join('') + '</tbody></table></div><p class="small muted" style="margin-top:8px">Las inscripciones rechazadas no entran en listados ni actas. Se pueden agregar a mano desde cada mesa si la institución decide aceptarlas.</p></details>';
+}
+async function cargarCodigos() {
+  const ta = $('#cargaTxt'), msg = $('#cargaMsg'); if (!ta || S.cargando) return;
+  const res = leerCodigos(ta.value);
+  if (!res.length) { msg.textContent = 'No encontré ningún código ISP66 en el texto.'; return; }
+  if (!S.db) { msg.textContent = 'No hay conexión con la base de datos.'; return; }
+  S.cargando = true; $('#btnCargar').disabled = true; msg.textContent = 'Cargando…';
+  let nuevos = 0, ya = 0, malos = [], evsOk = 0;
+  const pend = [];
+  res.forEach(r => { if (r.err) { malos.push(r.err); return; } r.evs.forEach(e => { evsOk++; const id = evId(e); if (S.codIds.has(id)) ya++; else { nuevos++; pend.push({ id, e }); S.codIds.add(id); } }); });
+  try {
+    await Promise.all(pend.map(p => S.db.doc('codigos/' + p.id).set(Object.assign({}, p.e, { cg: Date.now() }))));
+    ta.value = '';
+    msg.textContent = '';
+    $('#cargaRes').innerHTML = '<div class="callout ' + (malos.length ? 'warn' : 'ok') + '" style="margin-top:10px"><strong>' + res.filter(r => !r.err).length + ' código(s) leído(s)</strong>' + nuevos + ' movimiento(s) nuevo(s) cargado(s)' + (ya ? ' · ' + ya + ' ya estaban cargados' : '') + (malos.length ? '<br>No se pudieron leer: ' + malos.map(esc).join('; ') : '') + '. Revisá las observaciones si hay avisos.</div>';
+    S.obsOpen = true;
+  } catch (e) {
+    pend.forEach(p => S.codIds.delete(p.id));
+    msg.textContent = 'No se pudo guardar. Intentá de nuevo.';
+  }
+  S.cargando = false; const b = $('#btnCargar'); if (b) b.disabled = false;
+  indexRows(); renderAdminList();
+}
+function fichasDe(rows) {
+  const by = {};
+  rows.forEach(r => { if (r.src !== 'cod' || r.dup || r.st === 'no' || !MB[r.m]) return; by[r.key + '|' + MB[r.m].car] = { key: r.key, car: MB[r.m].car }; });
+  const out = [];
+  Object.keys(by).forEach(k => {
+    const x = by[k];
+    const its = ROWS.filter(r => r.src === 'cod' && r.key === x.key && !r.dup && r.st !== 'no' && MB[r.m] && MB[r.m].car === x.car).sort((a, b) => MB[a.m].f[a.l - 1] - MB[b.m].f[b.l - 1]);
+    if (its.length) { const r0 = its[0]; out.push({ car: x.car, p: { apellidos: r0.ap, nombres: r0.no, dni: r0.dni, tel: r0.tel, email: r0.email, libreta: r0.lib }, its, ap: r0.ap, no: r0.no }); }
+  });
+  return out.sort(cmpNombre);
+}
+function buildAdmin() {
+  const fechas = [...new Set(MESAS.flatMap(m => m.f))].sort((a, b) => a - b).map(t => dm(t)).filter((x, i, a) => a.indexOf(x) === i);
+  const fechaOpts = [...new Set(MESAS.flatMap(m => m.f))].sort((a, b) => a - b).map(t => '<option value="' + dm(t) + '">' + esc(fFecha(t)) + '</option>').filter((x, i, a) => a.indexOf(x) === i).join('');
+  $('#vistaAdmin').innerHTML = '<div class="sec"><header><h2>Panel de la institución</h2></header><div class="stats" id="admStats"></div>' +
+    '<details class="card" id="admCarga" open><summary>Cargar códigos recibidos por correo</summary><div style="margin-top:12px"><p class="small muted">Pegá acá el contenido de los correos (o mensajes) de los estudiantes: puede ser uno solo o muchos juntos. La página busca los códigos <span class="mono">ISP66.…</span>, los verifica y aplica las reglas con la fecha y hora en que cada estudiante los generó.</p>' +
+    '<div class="field"><label for="cargaTxt">Códigos o correos</label><textarea id="cargaTxt" rows="5" class="mono" style="font-size:.82rem"></textarea></div><div class="acts" style="margin-top:10px"><button class="btn" data-a="cargar" id="btnCargar" type="button">Cargar códigos</button><span class="small muted" id="cargaMsg" role="status"></span></div><div id="cargaRes"></div></div></details>' +
+    '<div id="admObs"></div>' +
+    '<div class="filtros"><div class="field"><label for="fCar">Carrera</label><select id="fCar"><option value="">Todas</option>' + CAR_ORDER.map(c => '<option value="' + c + '">' + esc(CARRERAS[c].nombre) + '</option>').join('') + '</select></div>' +
+    '<div class="field"><label for="fLl">Llamado</label><select id="fLl"><option value="">Ambos</option><option value="1">1º llamado</option><option value="2">2º llamado</option></select></div>' +
+    '<div class="field"><label for="fFecha">Fecha</label><select id="fFecha"><option value="">Todas</option>' + fechaOpts + '</select></div>' +
+    '<div class="field"><label for="fQ">Buscar</label><input id="fQ" type="search" placeholder="Materia, apellido o DNI"></div>' +
+    '<label class="opt"><input type="checkbox" id="fSolo"><span>Solo mesas con inscriptos</span></label></div>' +
+    '<div class="acts"><button class="btn" data-a="fichasAll">Fichas para imprimir (lo filtrado)</button><button class="btn sec" data-a="xlsxAll">Excel de lo filtrado</button><button class="btn sec" data-a="actasAll">Actas PDF de lo filtrado</button><label class="opt"><input type="checkbox" id="fPago"><span>En las actas, solo quienes firmaron y abonaron</span></label></div>' +
+    '<div id="admList"></div>' +
+    '<details class="card" id="admCfg"><summary>Configuración de plazos y datos de la institución</summary><p class="small muted" style="margin-top:8px">Estos valores se usan en el panel. Los estudiantes sin cuenta ven los plazos de la versión publicada de la página: si cambiás algo acá, hay que republicar la página para que ellos también lo vean.</p><div id="cfgBody" style="margin-top:12px"></div></details></div>';
+  buildCfg();
+}
+const toLocal = iso => new Date(Date.parse(iso) + OFF).toISOString().slice(0, 16);
+function buildCfg() {
+  $('#cfgBody').innerHTML = '<div class="cfg">' +
+    '<div class="field"><label for="c_desde">Abre la inscripción</label><input id="c_desde" type="datetime-local" value="' + toLocal(cfg.desde) + '"></div>' +
+    '<div class="field"><label for="c_hasta">Cierra la inscripción</label><input id="c_hasta" type="datetime-local" value="' + toLocal(cfg.hasta) + '"></div>' +
+    '<div class="field"><label for="c_bajaH">Horas antes de la mesa para darse de baja</label><input id="c_bajaH" type="number" min="0" value="' + esc(cfg.bajaH) + '"></div>' +
+    '<div class="field"><label for="c_listadoH">Horas antes de la mesa: listado definitivo</label><input id="c_listadoH" type="number" min="0" value="' + esc(cfg.listadoH) + '"></div>' +
+    '<div class="field"><label for="c_reinscD">Volver a inscribirse al 2º llamado tras rendir el 1º: días después del examen</label><input id="c_reinscD" type="number" min="0" max="5" value="' + esc(cfg.reinscD) + '"><span class="hint">0 = solo el mismo día. 1 = el mismo día o al día siguiente.</span></div>' +
+    '<div class="field"><label class="opt"><input id="c_habiles" type="checkbox"' + (cfg.habiles ? ' checked' : '') + '><span>Contar las horas como hábiles (sin sábados, domingos ni feriados)</span></label></div>' +
+    '<div class="field"><label for="c_feriados">Feriados y días no hábiles</label><input id="c_feriados" type="text" placeholder="23/11/2026, 07/12/2026" value="' + esc(cfg.feriados) + '"><span class="hint">Fechas separadas por coma. Solo se usan si contás horas hábiles.</span></div>' +
+    '<div class="field"><label for="c_emailInst">Correo institucional</label><input id="c_emailInst" type="email" value="' + esc(cfg.emailInst) + '"></div>' +
+    '<div class="field" style="grid-column:1/-1"><label for="c_pagoInfo">Instrucciones de firma y pago</label><textarea id="c_pagoInfo" placeholder="Ej.: Presentar la ficha firmada y abonar en secretaría, de lunes a viernes de 18 a 21 h.">' + esc(cfg.pagoInfo) + '</textarea></div></div>' +
+    '<div class="acts" style="margin-top:12px"><button class="btn" data-a="cfgsave">Guardar configuración</button><span class="small muted" id="cfgMsg"></span></div>';
+}
+async function guardarCfg() {
+  const g = id => $('#c_' + id);
+  const nuevo = { desde: g('desde').value + ':00-03:00', hasta: g('hasta').value + ':59-03:00', bajaH: Math.max(0, +g('bajaH').value || 0), listadoH: Math.max(0, +g('listadoH').value || 0), reinscD: Math.max(0, +g('reinscD').value || 0), habiles: g('habiles').checked, feriados: g('feriados').value.trim(), emailInst: g('emailInst').value.trim(), pagoInfo: g('pagoInfo').value.trim() };
+  if (isNaN(Date.parse(nuevo.desde)) || isNaN(Date.parse(nuevo.hasta)) || Date.parse(nuevo.hasta) <= Date.parse(nuevo.desde)) { $('#cfgMsg').textContent = 'Revisá las fechas de apertura y cierre.'; return; }
+  try { await S.db.doc('config/main').set(nuevo); $('#cfgMsg').textContent = 'Guardado.'; toast('Configuración guardada.'); } catch (e) { $('#cfgMsg').textContent = 'No se pudo guardar.'; }
+}
+async function setRev(rk, patch) {
+  const cur = S.revs[rk] || {}, next = Object.assign({}, cur, patch);
+  Object.keys(next).forEach(k => { if (next[k] == null || next[k] === false) delete next[k]; });
+  try { if (Object.keys(next).length) await S.db.doc('revisiones/' + rk).set(next); else await S.db.doc('revisiones/' + rk).delete(); }
+  catch (e) { toast('No se pudo guardar el cambio.'); }
+}
+function bloquesDe(lista, forActa) {
+  return lista.map(x => {
+    let rows = (BYML[x.m.id + '|' + x.l] || []).filter(r => !r.dup);
+    if (forActa) rows = rows.filter(r => r.st !== 'no' && (!S.soloPago || r.pago));
+    return { m: x.m, l: x.l, rows };
+  });
+}
+function actaPagina(doc, m, l, rows, p, pages) {
+  const car = CARRERAS[m.car], X = 15, W = 180;
+  doc.setDrawColor(0); doc.setTextColor(0); doc.setLineWidth(.5);
+  doc.setFont('times', 'bold'); doc.setFontSize(11.5); doc.rect(X, 16, W, 8); doc.text('ACTA VOLANTE DE EXAMEN', X + W / 2, 21.7, { align: 'center' });
+  if (pages > 1) { doc.setFontSize(8); doc.setFont('times', 'normal'); doc.text('Hoja ' + (p + 1) + ' de ' + pages, X + W, 13, { align: 'right' }); doc.setFont('times', 'bold'); }
+  const esp = 'ESPECIALIDAD: ' + car.esp + '.'; fit(doc, esp, W, 9.5); doc.text(esp, X, 34);
+  doc.setFontSize(9.5); doc.text('PLAN DE ESTUDIOS N°   ' + car.plan, X, 43); doc.setFont('times', 'bolditalic'); doc.text('TURNO: NOCHE', X + 112, 43);
+  doc.setFont('times', 'bold'); const asg = 'ASIGNATURA: ' + mesaNombre(m); fit(doc, asg, W, 9.5); doc.text(asg, X, 50);
+  doc.setFontSize(9.5); doc.text('Examen final · ' + ordl(l) + ' llamado · ' + m.anio + 'º año', X + W / 2, 58, { align: 'center' });
+  const cw = [8, 24, 26, 62, 8, 10, 12, 14, 16], y0 = 62, hh = 11, rh = 7.4; let x = X;
+  cw.forEach(w => { doc.rect(x, y0, w, hh); x += w; });
+  doc.setFontSize(8.5); x = X; const hd = [null, ['N°', 'Libreta'], ['N°', 'Documento'], ['APELLIDO Y NOMBRE'], ['PP'], ['Esc.'], ['Oral'], ['Prom'], ['Cal.Def.']];
+  hd.forEach((t, i) => { if (t) doc.text(t, x + cw[i] / 2, y0 + (t.length > 1 ? 4.6 : 6.6), { align: 'center', lineHeightFactor: 1.15 }); x += cw[i]; });
+  for (let r = 0; r < 24; r++) {
+    const y = y0 + hh + r * rh; x = X; cw.forEach(w => { doc.rect(x, y, w, rh); x += w; });
+    doc.setFont('times', 'bold'); doc.setFontSize(9); doc.text(pad(p * 24 + r + 1), X + cw[0] / 2, y + 5.1, { align: 'center' });
+    const it = rows[r]; if (!it) continue;
+    doc.setFont('times', 'normal'); x = X + cw[0];
+    doc.setFontSize(9); doc.text(String(it.lib || ''), x + cw[1] / 2, y + 5.1, { align: 'center' }); x += cw[1];
+    doc.text(fDNI(it.dni), x + cw[2] / 2, y + 5.1, { align: 'center' }); x += cw[2];
+    const nm = (it.ap.toUpperCase() + ', ' + it.no).trim(); fit(doc, nm, cw[3] - 3, 9, 6); doc.text(nm, x + 1.5, y + 5.1);
+  }
+  const yb = y0 + hh + 24 * rh + 9; doc.setFont('times', 'bold'); doc.setFontSize(9.5);
+  const l1 = 'Presidente: ...................................................  Vocal: .................................  Vocal: ...................................'; fit(doc, l1, W, 9.5); doc.text(l1, X, yb);
+  doc.setFontSize(9.5); const l2 = 'Total de examinados: .....................Aprobados: .................  Aplazados: ..................Ausentes: ................'; fit(doc, l2, W, 9.5); doc.text(l2, X, yb + 8);
+  doc.setFontSize(9.5); doc.text('CALCHAQUÍ, ' + dmy(m.f[l - 1]), X + W, yb + 16, { align: 'right' });
+}
+async function generarActas(bl, nombre) {
+  const con = bl.filter(b => b.rows.length);
+  if (!con.length) { toast('No hay estudiantes para armar actas con estos filtros.'); return; }
+  try { await loadLib(JSPDF); } catch (e) { toast(e.message); return; }
+  const doc = new window.jspdf.jsPDF({ unit: 'mm', format: 'a4' }); let first = true;
+  con.forEach(b => {
+    const rows = b.rows.slice().sort(cmpNombre), pages = Math.ceil(rows.length / 24);
+    for (let p = 0; p < pages; p++) { if (!first) doc.addPage(); first = false; actaPagina(doc, b.m, b.l, rows.slice(p * 24, p * 24 + 24), p, pages); }
+  });
+  await descargar(nombre + '.pdf', doc.output('arraybuffer'));
+}
+async function generarExcel(bl, nombre) {
+  const filas = [], resumen = [];
+  bl.forEach(b => {
+    const m = b.m, car = CARRERAS[m.car], f = m.f[b.l - 1], ok = b.rows.filter(r => r.st !== 'no');
+    resumen.push({ Carrera: car.nombre, 'Año': m.anio, Materia: m.materia, 'Comisión de la mesa': m.com.split('').join(' y '), Llamado: b.l, Fecha: dmy(f), Hora: hm(f), Inscriptos: ok.length, Verificados: ok.filter(r => r.st === 'ok').length, 'Firmaron y abonaron': ok.filter(r => r.pago).length });
+    b.rows.forEach(r => filas.push({ Carrera: car.nombre, Plan: car.plan, 'Año': m.anio, Materia: m.materia, 'Comisión de la mesa': m.com.split('').join(' y '), Llamado: b.l, Fecha: dmy(f), Hora: hm(f), Apellido: r.ap, Nombres: r.no, DNI: r.dni, 'N° de libreta': r.lib, 'Condición': r.c === 'L' ? 'Libre' : 'Regular', 'Comisión del estudiante': r.k, 'Teléfono': r.tel, 'Correo': r.email, 'Correlativas declaradas': corrDe(m) ? (r.dcl ? 'Sí' : 'No') : 'No tiene', 'Verificación': r.st === 'ok' ? 'Verificada' : r.st === 'no' ? 'No cumple' : 'Pendiente', 'Firmó y abonó': r.pago ? 'Sí' : 'No', Origen: r.src === 'man' ? 'A mano' : 'Código', 'Inscripción repetida': r.dup ? 'Sí' : '' }));
+  });
+  if (!filas.length) { toast('No hay inscriptos para exportar con estos filtros.'); return; }
+  try { await loadLib(XLSXURL); } catch (e) { toast(e.message); return; }
+  const X = window.XLSX, wb = X.utils.book_new(), ws = X.utils.json_to_sheet(filas), ws2 = X.utils.json_to_sheet(resumen.filter(r => r.Inscriptos));
+  ws['!cols'] = Object.keys(filas[0]).map(k => ({ wch: Math.min(46, Math.max(10, k.length + 2, ...filas.map(r => String(r[k] == null ? '' : r[k]).length + 1))) }));
+  ws2['!cols'] = Object.keys(resumen[0]).map(k => ({ wch: Math.min(52, Math.max(10, k.length + 2, ...resumen.map(r => String(r[k]).length + 1))) }));
+  X.utils.book_append_sheet(wb, ws, 'Listado'); X.utils.book_append_sheet(wb, ws2, 'Resumen por mesa');
+  await descargar(nombre + '.xlsx', new Blob([X.write(wb, { bookType: 'xlsx', type: 'array' })], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' }));
+}
+const slugF = x => slug(x).replace(/-/g, '_');
+function nombreArchivo(pref) { return pref + '_' + (S.fCar || 'todas_las_carreras') + '_' + (S.fFecha ? S.fFecha.replace('/', '-') : 'turno') + '_' + (S.fLl ? S.fLl + 'llamado' : 'ambos_llamados'); }
+function porKey(k) { const p = k.split('|'); return [{ m: MB[p[0]], l: +p[1] }]; }
+$('#vistaAdmin').addEventListener('click', async e => {
+  const b = e.target.closest('[data-a]');
+  if (!b) { const tr = e.target.closest('tr.fila'); if (tr) { const k = tr.dataset.k; if (S.open.has(k)) S.open.delete(k); else S.open.add(k); renderAdminList(); } return; }
+  const a = b.dataset.a;
+  if (a === 'pago') { const key = b.dataset.key; await setRev('pago_' + key, { pago: b.checked }); return; }
+  if (a === 'ver') return setRev(b.dataset.rk, { st: 'ok' });
+  if (a === 'no') return setRev(b.dataset.rk, { st: 'no' });
+  if (a === 'pend') return setRev(b.dataset.rk, { st: null });
+  if (a === 'del') { const id = b.dataset.id; if (S.cbAdm === id) { S.cbAdm = null; try { await S.db.doc('manuales/' + id).delete(); } catch (er) { toast('No se pudo quitar.'); } } else { S.cbAdm = id; renderAdminList(); setTimeout(() => { if (S.cbAdm === id) { S.cbAdm = null; renderAdminList(); } }, 5000); } return; }
+  if (a === 'acta') return generarActas(bloquesDe(porKey(b.dataset.k), true), 'Acta_volante_' + slugF(MB[b.dataset.k.split('|')[0]].materia) + '_' + b.dataset.k.split('|')[1] + 'llamado');
+  if (a === 'xlsx') return generarExcel(bloquesDe(porKey(b.dataset.k), false), 'Listado_' + slugF(MB[b.dataset.k.split('|')[0]].materia) + '_' + b.dataset.k.split('|')[1] + 'llamado');
+  if (a === 'ficha') { const l = fichasDe(ROWS.filter(r => r.key === b.dataset.key && MB[r.m].car === b.dataset.car)); return generarFichas(l, 'Ficha_inscripcion_' + (l[0] ? l[0].p.dni : 'alumno')); }
+  if (a === 'fichasAll') { const rows = []; listaML().forEach(x => (BYML[x.m.id + '|' + x.l] || []).forEach(r => rows.push(r))); return generarFichas(fichasDe(rows), nombreArchivo('Fichas')); }
+  if (a === 'xlsxAll') return generarExcel(bloquesDe(listaML(), false), nombreArchivo('Listado'));
+  if (a === 'actasAll') return generarActas(bloquesDe(listaML(), true), nombreArchivo('Actas'));
+  if (a === 'add') { S.add = { k: b.dataset.k, ap: '', no: '', dni: '', lib: '', c: 'R', k2: '' }; S.add.kk = ''; renderAdminList(); return; }
+  if (a === 'addcancel') { S.add = null; renderAdminList(); return; }
+  if (a === 'addsave') {
+    const ad = S.add, p = ad.k.split('|'), m = MB[p[0]], dni = ad.dni.replace(/[.\s]/g, '');
+    if (!ad.ap.trim() || !ad.no.trim() || !/^\d{7,8}$/.test(dni)) { $('#adErr').textContent = 'Completá apellidos, nombres y un DNI de 7 u 8 números.'; return; }
+    try { await S.db.collection('manuales').add({ m: m.id, l: +p[1], apellidos: ad.ap.trim(), nombres: ad.no.trim(), dni, libreta: ad.lib.trim(), c: ad.c, k: ad.kk || '', t: Date.now() }); S.add = null; toast('Estudiante agregado.'); } catch (er) { $('#adErr').textContent = 'No se pudo agregar.'; }
+    return;
+  }
+  if (a === 'cfgsave') return guardarCfg();
+  if (a === 'cargar') return cargarCodigos();
+});
+$('#vistaAdmin').addEventListener('input', e => {
+  const t = e.target;
+  if (t.id === 'fQ') { S.q = t.value; renderAdminList(); return; }
+  if (S.add && /^ad_/.test(t.id)) { const k = t.id.slice(3); S.add[k === 'k' ? 'kk' : k] = t.value; }
+});
+$('#vistaAdmin').addEventListener('change', e => {
+  const t = e.target;
+  if (t.id === 'fCar') S.fCar = t.value; else if (t.id === 'fLl') S.fLl = t.value; else if (t.id === 'fFecha') S.fFecha = t.value; else if (t.id === 'fSolo') S.soloCon = t.checked; else if (t.id === 'fPago') { S.soloPago = t.checked; return; } else if (/^ad_/.test(t.id)) { S.add[t.id === 'ad_k' ? 'kk' : t.id.slice(3)] = t.value; return; } else return;
+  renderAdminList();
+});
+$('#vistaAdmin').addEventListener('keydown', e => { if ((e.key === 'Enter' || e.key === ' ') && e.target.matches('tr.fila')) { e.preventDefault(); e.target.click(); } });
+
+/* ---------- Arranque ---------- */
+let rafT = 0, dirty = {};
+function refresh(what) { dirty[what] = 1; if (!rafT) rafT = requestAnimationFrame(() => { rafT = 0; const d = dirty; dirty = {}; if (d.cfg) { renderPlazos(); renderForm(); if (S.isAdmin && S.tab === 'adm' && $('#admCfg') && !$('#admCfg').open) buildCfg(); } if (d.adm && S.isAdmin && $('#admList')) { renderAdminList(); } }); }
+function setTab(t) {
+  S.tab = t; $('#vistaAlumno').hidden = t !== 'insc'; $('#vistaAdmin').hidden = t !== 'adm'; $('.wrap').classList.toggle('wide', t === 'adm');
+  $$('.tab[data-tab]').forEach(b => b.setAttribute('aria-selected', String(b.dataset.tab === t)));
+  if (t === 'adm') { if (!$('#admList')) buildAdmin(); renderAdminList(); }
+}
+$('#tabs').addEventListener('click', e => { const b = e.target.closest('.tab'); if (b) setTab(b.dataset.tab); });
+
+/* La parte del estudiante no depende de ninguna cuenta ni base de datos: se muestra de inmediato */
+renderPlazos(); renderAvisos(); renderRes(); renderForm();
+S.db = await useCap('db'); S.user = await useCap('user');
+if (S.user) { try { S.uid = await S.user.id(); S.isAdmin = await S.user.canEdit(); S.canWrite = await S.user.can('data.write'); } catch (e) { /* sin identidad */ } }
+if (S.isAdmin) $('#tabs').hidden = false;
+if (S.db && S.isAdmin) {
+  const onErr = () => { };
+  S.db.doc('config/main').onSnapshot(s => { cfg = Object.assign({}, CFG_DEF, s.exists ? s.data() : {}); refresh('cfg'); refresh('adm'); }, onErr);
+  S.db.collection('codigos').onSnapshot(q => { S.cod = q.docs.map(d => Object.assign({ id: d.id }, d.data())); S.codIds = new Set(q.docs.map(d => d.id)); refresh('adm'); }, onErr);
+  S.db.collection('revisiones').onSnapshot(q => { S.revs = {}; q.docs.forEach(d => { S.revs[d.id] = d.data(); }); refresh('adm'); }, onErr);
+  S.db.collection('manuales').onSnapshot(q => { S.man = q.docs.map(d => Object.assign({ id: d.id }, d.data())); refresh('adm'); }, onErr);
+}
+let lastOpen = inscAbierta(Date.now());
+setInterval(() => {
+  renderPlazos();
+  const o = inscAbierta(Date.now()); if (o !== lastOpen) { lastOpen = o; const ae = document.activeElement; if (!(ae && /^(INPUT|SELECT|TEXTAREA)$/.test(ae.tagName) && $('#formSec').contains(ae))) renderForm(); }
+  const ae = document.activeElement; if (S.isAdmin && S.tab === 'adm' && $('#admList') && !(ae && /^(INPUT|SELECT|TEXTAREA)$/.test(ae.tagName) && $('#vistaAdmin').contains(ae))) renderAdminList();
+}, 30000);
+})();
+</script>
+
+</body>
+</html>
